@@ -11,7 +11,11 @@
         , name
         , gender
         , birthday
+        , phone
         , delete_yn
+        , main_address
+        , detail_address
+        , member_type
         , created_date
         , modified_date
     </sql>
@@ -28,7 +32,11 @@
             , #{name}
             , #{gender}
             , #{birthday}
+            , #{phone}
             , 0
+            , NULL  /* 메인주소 */
+            , NULL  /* 디테일주소 */
+            , 0     /* 멤버타입 */
             , NOW()
             , NULL
         )
@@ -55,9 +63,12 @@
             , name = #{name}
             , gender = #{gender}
             , birthday = #{birthday}
+            , phone = #{phone}
             <if test="password != null and password != ''">
             , password = #{password}
             </if>
+            , main_address = #{mainAddress}
+            , detail_address = #{detailAddress}
         WHERE
             id = #{id}
     </update>
