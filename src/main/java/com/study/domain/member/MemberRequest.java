@@ -18,6 +18,10 @@ public class MemberRequest {
     private String name;            // 이름
     private Gender gender;          // 성별
     private LocalDate birthday;     // 생년월일
+    private String phone;           // 휴대폰번호
+    private String mainAddress;     // 큰주소(도로명주소)
+    private String detailAddress;   //디테일주소
+    private char memberType;        //멤버타입 (0:일반회원, 1:관리자)
 
     public void encodingPassword(PasswordEncoder passwordEncoder) {
         if (StringUtils.isEmpty(password)) {
