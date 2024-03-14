@@ -4,29 +4,31 @@
  * @returns 종성 포함 여부
  */
 function hasCoda(value) {
+    //value : 문자열
+    //value.charCodeAt(인덱스) : 마지막문자
+    console.log("종성검사할 value : ", value);
     return ((value.charCodeAt(value.length - 1) - 0xAC00) % 28) > 0;
 }
 
 
 /**
- * 필드(Elemenet) 유효성 검사
- * @param target - 검사 대상 Element
+ * 필드(Elemenet) 널 유효성 검사
+ * @param target - 검사 대상 Element. 원래마우스가 있던곳
  * @param fieldName - 필드명
- * @param focusTarget - 포커스 대상 Element
  * @returns 필드 입력(선택) 여부
  */
-function isValid(target, fieldName, focusTarget) {
+function isValid(target, fieldName) {
+    //공백이 아닌 값이 있으면 유효성검사 통과
     if (target.value.trim()) {
         return true;
     }
-
     const particle = (hasCoda(fieldName)) ? '을' : '를'; // 조사
     const elementType = (target.type === 'text' || target.type === 'password' || target.type === 'search' || target.type === 'textarea') ? '입력' : '선택';
     alert( `${fieldName + particle} ${elementType}해 주세요.` );
 
-    target.value = '';
-    ( !focusTarget ? target : focusTarget).focus();
-    throw new Error(`"${target.id}" is required...`)
+    //타겟으로 포커스 이동. 3번째파라미터인 포커스타겟이 비었으면 1번째 파라미터인 타겟으로, 값이 있으면 포커스타겟으로
+    target.focus();
+    throw new Error(`"${target.id}" 의 값을 입력해주세요`);
 }
 
 

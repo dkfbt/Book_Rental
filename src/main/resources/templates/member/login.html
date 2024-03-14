@@ -55,24 +55,24 @@
 						<tr>
 							<th scope="row">아이디<span class="es">필수 입력</span></th>
 							<td>
-								<input type="text" name="loginId" placeholder="아이디" maxlength="20" style="width: 80%;" />
-								<button type="button" id="idCheckBtn" class="btns btn_st5" onclick="checkLoginId();" style="width: 20%; float: right;">중복 확인</button>
+								<input type="text" id="userLoginId" name="loginId" placeholder="아이디" maxlength="20" style="width: 80%;"/>
+								<button type="button" id="idCheckBtn" class="btns btn_st5 required" onclick="checkLoginId();" style="width: 20%; float: right;">중복 확인</button>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">비밀번호<span class="es">필수 입력</span></th>
-							<td><input type="password" name="password" placeholder="비밀번호" maxlength="30" /></td>
+							<td><input type="password" id="userPassword" name="password" class="required" placeholder="비밀번호" maxlength="30"/></td>
 						</tr>
 						<tr>
 							<th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
-							<td><input type="password" name="passwordCheck" placeholder="비밀번호 재입력" maxlength="30" /></td>
+							<td><input type="password" id="passwordCheck" name="passwordCheck" class="required" placeholder="비밀번호 재입력" maxlength="30"/></td>
 						</tr>
 						<tr>
 							<th scope="row">이름<span class="es">필수 입력</span></th>
-							<td><input type="text" name="name" placeholder="이름" maxlength="10" /></td>
+							<td><input type="text" id="userName" name="name" class="required" placeholder="이름" maxlength="10"/></td>
 						</tr>
 						<tr>
-							<th scope="row">성별<span class="es">필수 입력</span></th>
+							<th scope="row">성별</th>
 							<td>
 								<div class="radio_group">
 									<p class="radios">
@@ -87,8 +87,20 @@
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">생년월일<span class="es">필수 입력</span></th>
-							<td><input type="number" name="birthday" placeholder="숫자 8자리 입력(8자리임에 유의)" /></td>
+							<th scope="row">생년월일</th>
+							<td><input type="number" id="birthday" name="birthday" placeholder="숫자 8자리 입력( 예: 19970925 )" /></td>
+						</tr>
+						<tr>
+							<th scope="row">전화번호</th>
+							<td><input type="number" id="phone" name="phone" placeholder="전화번호" /></td>
+						</tr>
+						<tr>
+							<th scope="row">도로명주소</th>
+							<td><input type="text" id="mainAddress" name="mainAddress" placeholder="도로명주소" /></td>
+						</tr>
+						<tr>
+							<th scope="row">상세주소</th>
+							<td><input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -158,8 +170,8 @@
 		// 회원가입 팝업 close
 		function closeSignupPopup() {
 			const form = document.getElementById('signupForm');
-			form.loginId.readOnly = false;
-			form.querySelector('#idCheckBtn').disabled = false;
+			form.loginId.readOnly = false;	//중복체크 후 읽기전용 처리했던 로그인아이디의 읽기전용모드 제거
+			form.querySelector('#idCheckBtn').disabled = false;	//회원가입때 비활성화했던 중복확인버튼 활성화
 			form.reset();
 			layerPopClose();
 		}
@@ -187,23 +199,31 @@
 		// 회원 정보 유효성 검사
 		function validationMemberInfo(form) {
 
-			const fields = form.querySelectorAll('input:not([type="radio"])');
-			const fieldNames = ['아이디', '비밀번호', '빕밀번호 재입력', '이름', '생년월일'];
+			//필수값이면서 라디오버튼이 아닌것만 선별하여 한번에 검사
+			const fields = form.querySelectorAll('input:not([type="radio"]).required');
+			const fieldNames = {
+				userId: '아이디',
+				password: '비밀번호',
+				passwordCheck: '비밀번호 재입력',
+				name: '이름'
+			};
 
-			for (let i = 0, len = fields.length; i < len; i++) {
-				isValid(fields[i], fieldNames[i]);
+			for (let field of fields) {
+				isValid(field, fieldNames[field.name]);
 			}
+
 
 			if (form.loginId.readOnly === false) {
 				alert('아이디 중복 체크를 완료해 주세요.');
-				throw new Error();
+				return false;
 			}
 
-			if (form.password.value !== form.passwordCheck.value) {
-				alert('비밀번호가 일치하지 않습니다.');
-				form.passwordCheck.focus();
-				throw new Error();
+			if ((form.userPassword.value != null && form.userPassword.value != '')  && (form.userPassword.value !== form.passwordCheck.value)) {
+				alert('비밀번호와 확인비밀번호가 일치하지 않습니다.');
+				form.userPassword.focus();
+				return false;
 			}
+
 		}
 
 
@@ -212,7 +232,10 @@
 
 			// 1. 필드 유효성 검사
 			const form = document.getElementById('signupForm');
-			validationMemberInfo(form);
+			let 검사결과 = validationMemberInfo(form);
+			if(검사결과==false){
+				return false;
+			}
 
 			// 2. 파라미터 세팅
 			const params = {}
