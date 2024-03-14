@@ -15,6 +15,7 @@
         , delete_yn
         , main_address
         , detail_address
+        , extra_address
         , member_type
         , created_date
         , modified_date
@@ -34,8 +35,9 @@
             , #{birthday}
             , #{phone}
             , 0
-            , NULL  /* 메인주소 */
-            , NULL  /* 디테일주소 */
+            , #{mainAddress}    /* 메인주소 */
+            , #{detailAddress}  /* 디테일주소 */
+            , #{extraAddress}   /* 엑스트라주소 */
             , 0     /* 멤버타입 */
             , NOW()
             , NULL
@@ -69,6 +71,7 @@
             </if>
             , main_address = #{mainAddress}
             , detail_address = #{detailAddress}
+            , extra_address = #{extraAddress}
         WHERE
             id = #{id}
     </update>

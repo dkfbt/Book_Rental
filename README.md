@@ -29,12 +29,15 @@ CREATE TABLE `tb_member` (
   `delete_yn` tinyint(1) NOT NULL COMMENT '삭제 여부(0:정상, 1:탈퇴)' default 0,
   `main_address` varchar(300) COMMENT '메인주소',
   `detail_address` varchar(300) COMMENT '디테일주소',
+  `extra_address` varchar(300) COMMENT '참고항목-주소',
   `member_type` char(1) COMMENT '회원유형(0:일반회원, 1:관리자)' default 0,
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT '생성일시',
   `modified_date` datetime DEFAULT NULL COMMENT '최종 수정일시',
   PRIMARY KEY (`id`),
   UNIQUE KEY uix_member_login_id (`login_id`)
 ) COMMENT '회원';
+
+
 
 
 
