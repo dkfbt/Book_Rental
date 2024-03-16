@@ -22,6 +22,39 @@
     </sql>
 
 
+    <!-- 회원 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'login_id'.equals( searchType )">
+                            AND login_id LIKE CONCAT('%', #{loginId}, '%')
+                        </when>
+                        <when test="'phone'.equals( searchType )">
+                            AND phone LIKE CONCAT('%', #{phone}, '%')
+                        </when>
+                        <when test="'detail_address'.equals( searchType )">
+                            AND detail_address LIKE CONCAT('%', #{detailAddress}, '%')
+                        </when>
+                    </choose>
+                </when>
+
+                <!-- 전체 검색일 때 -->
+                <otherwise>
+                    AND (
+                           login_id LIKE CONCAT('%', #{loginId}, '%')
+                        OR phone LIKE CONCAT('%', #{phone}, '%')
+                        OR detail_address LIKE CONCAT('%', #{detailAddress}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+
     <!-- 회원 정보 저장 (회원가입) -->
     <insert id="save" parameterType="com.study.domain.member.MemberRequest" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_member (
@@ -96,5 +129,32 @@
         WHERE
             login_id = #{value}
     </select>
+
+    <!-- 멤버 수 카운팅 -->
+    <select id="count" parameterType="com.study.common.dto.SearchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            tb_member
+        WHERE
+            delete_yn = 0
+            <include refid="search" />
+    </select>
+
+
+    <!-- 회원 멤버리스트 -->
+    <select id="findAll" parameterType="com.study.common.dto.SearchDto" resultType="com.study.domain.member.MemberResponse">
+        SELECT
+            <include refid="memberColumns" />
+        FROM
+            tb_member
+        WHERE
+            delete_yn = 0
+            <include refid="search" />
+        ORDER BY
+            id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
 
 </mapper>

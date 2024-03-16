@@ -1,6 +1,10 @@
 package com.study.domain.member;
 
+import com.study.common.dto.SearchDto;
+import com.study.common.paging.PagingResponse;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface MemberMapper {
@@ -36,5 +40,21 @@ public interface MemberMapper {
      * @return 회원 수
      */
     int countByLoginId(String loginId);
+
+
+    /**
+     * 멤버 수 카운팅
+     *
+     * @return 멤버 수
+     */
+    int count(SearchDto params);
+
+
+    /**
+     * 회원 리스트
+     * @param member
+     * @return 회원 리스트
+     */
+    List<MemberResponse> findAll(SearchDto member);
 
 }
