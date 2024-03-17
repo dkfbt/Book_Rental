@@ -22,19 +22,19 @@
             <div class="lcontent">
                 <!--/* 메뉴 */-->
                 <nav>
-                    <ul>
-                        <li class="has_sub"><a href="javascript: void(0);" class="on"><span>게시판 관리</span></a>
+                    <ul class="category">
+                        <li class="has_sub"><a href="javascript: void(0);" id="postManage"><span>게시판 관리</span></a>
                             <ul>
-                                <li><a href="/post/list.do" class="on">리스트형</a></li>
-                                <li><a href="javascript: alert('준비 중입니다.');">갤러리형</a></li>
-                                <li><a href="javascript: alert('준비 중입니다.');">캘린더형</a></li>
+                                <li class="endMenu"><a href="/post/list.do"         id="postList">리스트형</a></li>
+                                <li class="endMenu"><a href="javascript: alert('준비 중입니다.');">갤러리형</a></li>
+                                <li class="endMenu"><a href="javascript: alert('준비 중입니다.');">캘린더형</a></li>
                             </ul>
                         </li>
-                        <li class="has_sub"><a href="javascript: void(0);"><span>회원 관리</span></a>
+                        <li class="has_sub"><a href="javascript: void(0);" id="adminUserManage"><span>회원 관리</span></a>
                             <ul>
-                                <li><a href="/admin/member/list.do" class="on">관리자의 회원목록</a></li>
-                                <li><a href="/member/mypage.do">유저의 마이페이지</a></li>
-                                <li><a href="/admin/member/write.do">관리자의 유저수정</a></li>
+                                <li class="endMenu"><a href="/admin/member/list.do"   id="adminUserList">관리자의 회원목록</a></li>
+                                <li class="endMenu"><a href="/member/mypage.do"       id="userMyPage">유저의 마이페이지</a></li>
+                                <li class="endMenu"><a href="/admin/member/write.do"  id="adminUserModify">관리자의 유저수정</a></li>
                             </ul>
                         </li>
                         <li><a href="javascript: alert('준비 중입니다.');"><span>도서 관리</span></a></li>

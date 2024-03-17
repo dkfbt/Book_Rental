@@ -1,18 +1,34 @@
 $(document).ready(function(){
+
+    var selectedMenu = localStorage.getItem('selectedMenu');
+    console.log(selectedMenu);
+    if(selectedMenu) {
+        $(selectedMenu).addClass('on').next('ul').show();
+    }
+
+
 	// gnb
 	$("nav > ul > li.has_sub > a").click(function(e){
-		if($(this).parent().has("> ul")) {
+		if($(this).parent().has(".category")) {
+		    console.log("카테고리")
 			e.preventDefault();
 		}
 
-		if(!$(this).hasClass("on")) {
+
+		if(!$(this).hasClass("on")) {   //선택 안되어 있었다면 선택하고 펼치기
 			$(this).next("ul").stop().slideDown(200);
 			$(this).addClass("on");
 			$(this).parent().siblings().find(" > a").removeClass("on").end().find(" > ul").stop().slideUp(200);
-		}else if($(this).hasClass("on")) {
+			if($(this).parent().hasClass("endMenu")){    //말단이여서 화면 전환 됐다면 선택된 메뉴를 localStorage에 저장
+			    localStorage.setItem('selectedMenu', '#' + $(this).attr('id'));
+			}
+
+		}else if($(this).hasClass("on")) {  //선택 되어 있었다면 선택표시제거하고 접기
 			$(this).removeClass("on");
 			$(this).next("ul").stop().slideUp(200);
+			localStorage.removeItem('selectedMenu');
 		}
+
 	});
 
 	// menu_toggle
