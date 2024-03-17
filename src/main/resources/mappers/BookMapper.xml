@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.domain.book.BookMapper">
+
+    <!-- tb_book 테이블 전체 컬럼 -->
+    <sql id="bookColumns">
+	  bookid
+	, isbn
+	, book_name
+	, cover_file
+	, writer
+	, pb_comp
+	, pb_date
+	, price
+	, cr_date
+	, cr_memberid
+	, md_date
+	, md_memberid
+    </sql>
+
+
+    <!-- 도서 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'isbn'.equals( searchType )">
+                            AND isbn LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'bookName'.equals( searchType )">
+                            AND book_name LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'writer'.equals( searchType )">
+                            AND writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </when>
+
+                <!-- 전체 검색일 때 -->
+                <otherwise>
+                    AND (
+                           isbn LIKE CONCAT('%', #{keyword}, '%')
+                        OR book_name LIKE CONCAT('%', #{keyword}, '%')
+                        OR writer LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+
+    <!-- 도서 저장 -->
+    <insert id="save" parameterType="com.study.domain.book.BookRequest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_book (
+            <include refid="bookColumns" />
+        ) VALUES (
+            , NULL
+            , #{isbn}
+            , #{bookName}
+            , #{coverFile}
+            , #{writer}
+            , #{pbComp}
+            , #{pbDate}
+            , #{price}
+            , NOW()
+            , ''
+            , NOW()
+            , ''
+        )
+    </insert>
+
+
+    <!-- 도서 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="com.study.domain.book.BookResponse">
+        SELECT
+            <include refid="bookColumns" />
+        FROM
+            tb_book
+        WHERE
+            bookid = #{value}
+    </select>
+
+
+    <!-- 도서 수정 -->
+    <update id="update" parameterType="com.study.domain.book.BookRequest">
+        UPDATE tb_book
+        SET
+              md_date = NOW()
+            , isbn = #{isbn}
+            , book_name = #{bookName}
+            , cover_file = #{coverFile}
+            , writer = #{writer}
+            , pb_comp = #{pbComp}
+            , pb_date = #{pbDate}
+            , price = #{price}
+        WHERE
+            bookid = #{bookId}
+    </update>
+
+
+    <!-- 도서 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE tb_book
+        WHERE
+            bookid = #{bookId}
+    </delete>
+
+
+    <!-- 도서 리스트 조회 -->
+    <select id="findAll" parameterType="com.study.common.dto.SearchDto" resultType="com.study.domain.book.BookResponse">
+        SELECT
+            <include refid="bookColumns" />
+        FROM
+            tb_book
+        WHERE
+            <include refid="search" />
+        ORDER BY
+            id DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+
+    <!-- 도서 수 카운팅 -->
+    <select id="count" parameterType="com.study.common.dto.SearchDto" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            tb_book
+        WHERE
+            <include refid="search" />
+    </select>
+
+</mapper>

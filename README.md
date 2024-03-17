@@ -1,8 +1,3 @@
-# DB 커넥션 수정
-# 화면공통함수 = function.js
----
-
-# DDL
 CREATE TABLE `tb_post` (
     `id`            bigint(20)    NOT NULL AUTO_INCREMENT COMMENT 'PK',
     `title`         varchar(100)  NOT NULL COMMENT '제목',
@@ -39,8 +34,6 @@ CREATE TABLE `tb_member` (
 
 
 
-
-
 create table tb_comment (
       id bigint not null auto_increment comment '댓글 번호 (PK)'
     , post_id bigint not null comment '게시글 번호 (FK)'
@@ -53,10 +46,58 @@ create table tb_comment (
 ) comment '댓글';
 
 
-_select * from tb_member;_
+
+ drop table TB_BOOK;
+CREATE TABLE `TB_BOOK` (
+	  `bookid`	bigint	auto_increment NOT NULL		COMMENT '자동시퀀스 1씩 증가'
+	, `isbn`	varchar(17)	NOT NULL	COMMENT '4글자-2글자-4글자-3글자-1글자'
+	, `book_name`	varchar(300)		comment '책제목'
+	, `cover_file`	varchar(300) 	comment '표지파일'
+	, `writer`	varchar(100)		comment '저자'
+	, `pb_comp`	varchar(100)		comment '출판사'
+	, `pb_date`	date				comment '출판일'
+	, `price`		int	    			comment '가격'
+	, `cr_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '생성일시'
+	, `cr_memberid`	bigint		NOT null	COMMENT '작성자'
+	, `md_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '수정일시'
+	, `md_memberid`	bigint		NOT null COMMENT '수정자'
+	, primary key(bookid)
+);
+
+drop table TB_RENTAL;
+CREATE TABLE `TB_RENTAL` (
+	  `rental_no`	bigint	auto_increment NOT null	COMMENT '대여ID'
+	, `memberid`	bigint	NOT NULL	COMMENT '대여자ID'
+	, `bookid`		bigint	NOT null	COMMENT '대여도서ID'
+	, `rental_date`	datetime	NOT NULL	COMMENT '대여일. 반납계산일은 대여일+14'
+	, `return_date`	datetime	NOT null	COMMENT '실제반납일'
+	, `cr_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '생성일시'
+	, `cr_memberid`	bigint		NOT null	COMMENT '작성자'
+	, `md_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '수정일시'
+	, `rental_availableyn`	char(1)	NOT NULL	DEFAULT 'Y'	COMMENT 'Y:대여가능 N:대여불가능'
+	, `md_memberid`	bigint		NOT null COMMENT '수정자'
+	, primary key(rental_no)
+);
+ALTER TABLE `TB_RENTAL` ADD CONSTRAINT `FK_member_TO_rental_1` FOREIGN KEY (`memberid`)
+REFERENCES `tb_member` (`id`);
+ALTER TABLE `TB_RENTAL` ADD CONSTRAINT `FK_book_TO_rental_1` FOREIGN KEY (`bookid`)
+REFERENCES `TB_BOOK` (`bookid`);
+
+drop table `tb_file`;
+CREATE TABLE `tb_file` (
+	`file_key`	int	NOT NULL
+	, `origin_filename`	varchar(200)	NOT NULL
+	, `save_filename`	varchar(200)	NOT NULL
+	, `ext`	varchar(10)	NOT NULL
+	, `size`	int	NOT NULL default 0
+	, `save_address`	varchar(300)	NOT NULL
+	, `cr_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '생성일시'
+	, `cr_memberid`	bigint		NOT null	COMMENT '작성자'
+	, `md_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '수정일시'
+	, `md_memberid`	bigint		NOT null COMMENT '수정자'
+	, primary key(file_key)
+);
 
 
+select * from tb_member;
 
----
-
-# 
