@@ -55,6 +55,7 @@
 
     <!-- 도서 저장 -->
     <insert id="save" parameterType="com.study.domain.book.BookRequest" useGeneratedKeys="true" keyProperty="id">
+        /* bookMapper.save */
         INSERT INTO tb_book (
             <include refid="bookColumns" />
         ) VALUES (
@@ -76,17 +77,19 @@
 
     <!-- 도서 상세정보 조회 -->
     <select id="findById" parameterType="long" resultType="com.study.domain.book.BookResponse">
+        /* bookMapper.findById */
         SELECT
             <include refid="bookColumns" />
         FROM
             tb_book
         WHERE
-            bookid = #{value}
+            bookid = #{bookId}
     </select>
 
 
     <!-- 도서 수정 -->
     <update id="update" parameterType="com.study.domain.book.BookRequest">
+        /* bookMapper.update */
         UPDATE tb_book
         SET
               md_date = NOW()
@@ -104,6 +107,7 @@
 
     <!-- 도서 삭제 -->
     <delete id="deleteById" parameterType="long">
+        /* bookMapper.deleteById */
         DELETE tb_book
         WHERE
             bookid = #{bookId}
@@ -112,25 +116,29 @@
 
     <!-- 도서 리스트 조회 -->
     <select id="findAll" parameterType="com.study.common.dto.SearchDto" resultType="com.study.domain.book.BookResponse">
+        /* bookMapper.findAll */
         SELECT
             <include refid="bookColumns" />
         FROM
             tb_book
         WHERE
+            1=1
             <include refid="search" />
         ORDER BY
-            id DESC
+            bookid DESC
         LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 
 
     <!-- 도서 수 카운팅 -->
     <select id="count" parameterType="com.study.common.dto.SearchDto" resultType="int">
+        /* BookMapper.count */
         SELECT
             COUNT(*)
         FROM
             tb_book
         WHERE
+            1=1
             <include refid="search" />
     </select>
 

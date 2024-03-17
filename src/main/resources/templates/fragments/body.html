@@ -37,7 +37,13 @@
                                 <li class="endMenu"><a href="/admin/member/write.do"  id="adminUserModify">관리자의 유저수정</a></li>
                             </ul>
                         </li>
-                        <li><a href="javascript: alert('준비 중입니다.');"><span>도서 관리</span></a></li>
+                        <li class="has_sub" ><a href="javascript: void(0);" id="bookManage"><span>도서 관리</span></a>
+                            <ul>
+                                <li class="endMenu"><a href="/book/list.do"        id="bookList">도서목록</a></li>
+                                <li class="endMenu"><a href="/book/write.do"       id="bookWrite">도서등록</a></li>
+                            </ul>
+
+                        </li>
                         <li><a href="javascript: alert('준비 중입니다.');"><span>대여(예약) 관리</span></a></li>
                     </ul>
                 </nav>
