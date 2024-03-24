@@ -116,5 +116,22 @@ CREATE TABLE `tb_file` (
 ) COMMENT '첨부파일';
 
 
+DROP TABLE IF EXISTS `tb_review`;
+CREATE TABLE `tb_review` (
+	`reviewid`	bigint	NOT NULL auto_increment comment '리뷰 번호 (PK)'
+	, `writer`	bigint	NULL			comment '작성자'
+	, `bookid`	bigint	null    		comment '북ID'
+	, `content`	varchar(2000)	null    comment '리뷰내용'
+	, `delete_yn` tinyint(1) not null default 0 comment '삭제 여부'
+	, `cr_date`	datetime	NULL	DEFAULT now()
+	, `md_date`	datetime	NULL	DEFAULT now()
+	, primary key(reviewid)
+);
+
+ALTER TABLE `tb_review` ADD CONSTRAINT  FOREIGN KEY (`writer`) REFERENCES `tb_member` (`id`);
+ALTER TABLE `tb_review` ADD CONSTRAINT  FOREIGN KEY (`bookid`) REFERENCES `tb_book` (`bookid`);
+
 select * from tb_member;
+select * from tb_file;
+select * from tb_review;
 

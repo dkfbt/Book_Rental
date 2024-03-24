@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.domain.review.ReviewMapper">
+
+    <!-- tb_review 테이블 전체 컬럼 -->
+    <sql id="reviewColumns">
+          reviewid
+        , bookid
+        , content
+        , writer
+        , delete_yn
+        , cr_date
+        , md_date
+    </sql>
+
+
+    <!-- 리뷰 저장 -->
+    <insert id="save" parameterType="com.study.domain.review.ReviewRequest" useGeneratedKeys="true" keyProperty="reviewId">
+        /* ReviewMapper.save */
+        INSERT INTO tb_review (
+            <include refid="reviewColumns" />
+        ) VALUES (
+              #{reviewId}
+            , #{bookId}
+            , #{content}
+            , #{writer}
+            , 0
+            , NOW()
+            , NULL
+        )
+    </insert>
+
+
+    <!-- 리뷰 상세정보 조회 -->
+    <select id="findById" parameterType="long" resultType="com.study.domain.review.ReviewResponse">
+        /* ReviewMapper.findById */
+        SELECT
+            <include refid="reviewColumns" />
+        FROM
+            tb_review
+        WHERE
+            reviewid = #{value}
+    </select>
+
+
+    <!-- 리뷰 수정 -->
+    <update id="update" parameterType="com.study.domain.review.ReviewRequest">
+        /* ReviewMapper.update */
+        UPDATE tb_review
+        SET
+              md_date = NOW()
+            , content = #{content}
+            , writer = #{writer}
+        WHERE
+            reviewid = #{reviewId}
+    </update>
+
+
+    <!-- 리뷰 삭제 -->
+    <delete id="deleteById" parameterType="long">
+        /* ReviewMapper.deleteById */
+        UPDATE tb_review
+        SET
+            delete_yn = 1
+        WHERE
+            reviewid = #{reviewId}
+    </delete>
+
+
+    <!-- 리뷰 리스트 조회 -->
+    <select id="findAll" parameterType="com.study.domain.review.ReviewSearchDto" resultType="com.study.domain.review.ReviewResponse">
+        /* ReviewMapper.findAll */
+        SELECT
+            <include refid="reviewColumns" />
+        FROM
+            tb_review
+        WHERE
+            delete_yn = 0
+            AND bookid = #{bookId}
+        ORDER BY
+            reviewid DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+
+    <!-- 리뷰 수 카운팅 -->
+    <select id="count" parameterType="com.study.domain.review.ReviewSearchDto" resultType="int">
+        /* ReviewMapper.count */
+        SELECT
+            COUNT(*)
+        FROM
+            tb_review
+        WHERE
+            delete_yn = 0
+            AND bookid = #{bookId}
+    </select>
+
+</mapper>

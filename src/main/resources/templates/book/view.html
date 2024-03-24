@@ -6,8 +6,8 @@
 
     <th:block layout:fragment="content">
         <div class="page_tits">
-            <h3>게시판 관리</h3>
-            <p class="path"><strong>현재 위치 :</strong> <span>게시판 관리</span> <span>리스트형</span> <span>상세정보</span></p>
+            <h3>도서 관리</h3>
+            <p class="path"><strong>현재 위치 :</strong> <span>도서 관리</span> <span>리스트형</span> <span>상세정보</span></p>
         </div>
 
         <div class="content">
@@ -18,29 +18,29 @@
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th scope="row">글 유형</th>
-                            <td th:text="${post.noticeYn == false ? '일반' : '공지'}"></td>
+                            <th scope="row">도서 제목</th>
+                            <td>[[ ${book.bookName} ]]</td>
 
-                            <th scope="row">등록일</th>
-                            <td th:text="${#temporals.format( post.createdDate, 'yyyy-MM-dd HH:mm' )}"></td>
+                            <th scope="row">ISBN</th>
+                            <td colspan="3">[[ ${book.isbn} ]]</td>
                         </tr>
                         <tr>
-                            <th scope="row">제목</th>
-                            <td>[[ ${post.title} ]]</td>
+                            <th scope="row">저자</th>
+                            <td colspan="3">[[ ${book.writer} ]]</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">가격</th>
+                            <td colspan="3">[[ ${book.price} ]]원</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">출판사</th>
+                            <td >[[ ${book.pbComp} ]]</td>
 
-                            <th scope="row">조회</th>
-                            <td colspan="3">[[ ${post.viewCnt} ]]</td>
+                            <th scope="row">출판일</th>
+                            <td colspan="3" th:text="${#temporals.format( book.pbDate, 'yyyy-MM-dd' )}"></td>
                         </tr>
                         <tr>
-                            <th scope="row">이름</th>
-                            <td colspan="3">[[ ${post.writer} ]]</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">내용</th>
-                            <td colspan="3">[[ ${post.content} ]]</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">첨부파일</th>
+                            <th scope="row">썸네일</th>
                             <td id="files" colspan="3">
 
                             </td>
@@ -49,22 +49,22 @@
                 </table>
                 <p class="btn_set">
                     <button type="button" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정</button>
-                    <button type="button" onclick="deletePost();" class="btns btn_bdr1 btn_mid">삭제</button>
+                    <button type="button" onclick="deleteBook();" class="btns btn_bdr1 btn_mid">삭제</button>
                     <button type="button" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로</button>
                 </p>
 
-                <!--/* 댓글 작성 */-->
+                <!--/* 리뷰 작성 */-->
                 <div class="cm_write">
                     <fieldset>
-                        <legend class="skipinfo">댓글 입력</legend>
+                        <legend class="skipinfo">리뷰 입력</legend>
                         <div class="cm_input">
-                            <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
-                            <span><button type="button" class="btns" onclick="saveComment();">등 록</button> <i id="counter">0/300자</i></span>
+                            <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="리뷰을 입력해 주세요."></textarea></p>
+                            <span><button type="button" class="btns" onclick="saveReview();">등 록</button> <i id="counter">0/300자</i></span>
                         </div>
                     </fieldset>
                 </div>
 
-                <!--/* 댓글 렌더링 영역 */-->
+                <!--/* 리뷰 렌더링 영역 */-->
                 <div class="cm_list">
 
                 </div>
@@ -76,9 +76,9 @@
             </section>
         </div> <!--/* .content */-->
 
-        <!--/* 댓글 수정 popup */-->
-        <div id="commentUpdatePopup" class="popLayer">
-            <h3>댓글 수정</h3>
+        <!--/* 리뷰 수정 popup */-->
+        <div id="reviewUpdatePopup" class="popLayer">
+            <h3>리뷰 수정</h3>
             <div class="pop_container">
                 <table class="tb tb_row tl">
                     <colgroup>
@@ -96,11 +96,11 @@
                     </tbody>
                 </table>
                 <p class="btn_set">
-                    <button type="button" id="commentUpdateBtn" class="btns btn_st2">수정</button>
-                    <button type="button" class="btns btn_bdr2" onclick="closeCommentUpdatePopup();">취소</button>
+                    <button type="button" id="reviewUpdateBtn" class="btns btn_st2">수정</button>
+                    <button type="button" class="btns btn_bdr2" onclick="closeReviewUpdatePopup();">취소</button>
                 </p>
             </div>
-            <button type="button" class="btn_close" onclick="closeCommentUpdatePopup();"><span><i class="far fa-times-circle"></i></span></button>
+            <button type="button" class="btn_close" onclick="closeReviewUpdatePopup();"><span><i class="far fa-times-circle"></i></span></button>
         </div>
     </th:block>
 
@@ -111,7 +111,7 @@
             window.onload = () => {
                 findAllFile();
 
-                findAllComment();
+                findAllReview();
             }
 
 
@@ -119,8 +119,8 @@
             function findAllFile() {
 
                 // 1. API 호출
-                const postId = [[ ${post.id}]];
-                const response = getJson(`/posts/${postId}/files`);
+                const bookId = [[ ${book.bookId}]];
+                const response = getJson(`/books/${bookId}/files`);
 
                 // 2. 로직 종료
                 if ( !response.length ) {
@@ -130,7 +130,7 @@
                 // 3. 파일 영역 추가
                 let fileHtml = '<div class="file_down"><div class="cont">';
                 response.forEach(row => {
-                    fileHtml += `<a href="/posts/${postId}/files/${row.id}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.originalName}</a>`;
+                    fileHtml += `<a href="/books/${bookId}/files/${row.id}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.originalName}</a>`;
                 })
                 fileHtml += '</div></div>';
 
@@ -139,32 +139,32 @@
             }
 
 
-           // 전체 댓글 조회
-            function findAllComment(page) {
+           // 전체 리뷰 조회
+            function findAllReview(page) {
 
                 const uriPage = new URLSearchParams(location.search).get('page');
                 page = (page) ? page : (uriPage ? Number(uriPage) : 1);
 
-                const postId = [[ ${post.id}]];
-                const uri = `/posts/${postId}/comments`;
+                const bookId = [[ ${book.bookId}]];
+                const uri = `/books/${bookId}/reviews`;
                 const params = {
                     page : page,
                     recordSize : 5,
                     pageSize : 10,
-                    postId : postId,
+                    bookId : bookId,
                 }
 
                 const response = getJson(uri, params);
                 const pagination = response.pagination;
-                drawComments(response.list);
+                drawReviews(response.list);
                 drawPage(pagination, page);
             }
 
 
             // 게시글 삭제
-            function deletePost() {
+            function deleteBook() {
 
-                const id = [[ ${post.id} ]];
+                const id = [[ ${book.bookId} ]];
 
                 if ( !confirm(id + '번 게시글을 삭제할까요?') ) {
                     return false;
@@ -177,7 +177,7 @@
                 })
 
                 const formHtml = `
-                    <form id="deleteForm" action="/post/delete.do" method="post">
+                    <form id="deleteForm" action="/book/delete.do" method="book">
                         ${inputHtml}
                     </form>
                 `;
@@ -191,7 +191,7 @@
 
             // 게시글 수정 페이지로 이동
             function goWritePage() {
-                location.href = '/post/write.do' + location.search;
+                location.href = '/book/write.do' + location.search;
             }
 
 
@@ -199,14 +199,14 @@
             function goListPage() {
                 const queryString = new URLSearchParams(location.search);
                 queryString.delete('id');
-                location.href = '/post/list.do' + '?' + queryString.toString();
+                location.href = '/book/list.do' + '?' + queryString.toString();
             }
 
 
-            // 댓글 길이 카운팅
+            // 리뷰 길이 카운팅
             function countingLength(content) {
                 if (content.value.length > 300) {
-                    alert('댓글을 300자 이하로 입력해 주세요.');
+                    alert('리뷰을 300자 이하로 입력해 주세요.');
                     content.value = content.value.substring(0, 300);
                     content.focus();
                 }
@@ -214,100 +214,101 @@
             }
 
 
-            // 댓글 저장
-            function saveComment() {
+            // 리뷰 저장
+            function saveReview() {
 
                 const content = document.getElementById('content');
-                isValid(content, '댓글');
+                isValid(content, '리뷰');
 
-                const postId = [[ ${post.id} ]];
-                const uri = `/posts/${postId}/comments`;
+                const bookId = [[ ${book.bookId} ]];
+                const uri = `/books/${bookId}/reviews`;
                 const params = {
-                    postId : postId,
+                    bookId : bookId,
                     content : content.value,
-                    writer : '홍길동'
+                    writer : 2
+                    //로그인 유저아이디로 바꿔야함
                 }
 
-                callApi(uri, 'post', params);
+                callApi(uri, 'post', params);   //uri, method, params
                 alert('저장되었습니다.');
                 content.value = '';
                 document.getElementById('counter').innerText = '0/300자';
-                findAllComment(1);
+                findAllReview(1);
             }
 
 
-            // 댓글 수정 팝업 open
-            function openCommentUpdatePopup(id) {
+            // 리뷰 수정 팝업 open
+            function openReviewUpdatePopup(id) {
 
-                const postId = [[ ${post.id} ]];
-                const uri = `/posts/${postId}/comments/${id}`;
+                const bookId = [[ ${book.bookId} ]];
+                const uri = `/books/${bookId}/reviews/${id}`;
                 const response = getJson(uri);
                 document.getElementById('modalWriter').value = response.writer;
                 document.getElementById('modalContent').value = response.content;
-                document.getElementById('commentUpdateBtn').setAttribute('onclick', `updateComment(${id})`);
-                layerPop('commentUpdatePopup');
+                document.getElementById('reviewUpdateBtn').setAttribute('onclick', `updateReview(${id})`);
+                layerPop('reviewUpdatePopup');
             }
 
 
-            // 댓글 수정 팝업 close
-            function closeCommentUpdatePopup() {
+            // 리뷰 수정 팝업 close
+            function closeReviewUpdatePopup() {
                 document.querySelectorAll('#modalContent, #modalWriter').forEach(element => element.value = '');
-                document.getElementById('commentUpdateBtn').removeAttribute('onclick');
-                layerPopClose('commentUpdatePopup');
+                document.getElementById('reviewUpdateBtn').removeAttribute('onclick');
+                layerPopClose('reviewUpdatePopup');
             }
 
 
-            // 댓글 수정
-            function updateComment(id) {
+            // 리뷰 수정
+            function updateReview(id) {
 
                 const writer = document.getElementById('modalWriter');
                 const content = document.getElementById('modalContent');
                 isValid(writer, '작성자');
                 isValid(content, '수정할 내용');
 
-                const postId = [[ ${post.id} ]];
-                const uri = `/posts/${postId}/comments/${id}`;
+                const bookId = [[ ${book.bookId} ]];
+                const uri = `/books/${bookId}/reviews/${id}`;
                 const params = {
                     id : id,
-                    postId : postId,
+                    bookId : bookId,
                     content : content.value,
                     writer : writer.value
                 }
 
                 callApi(uri, 'patch', params);
                 alert('수정되었습니다.');
-                closeCommentUpdatePopup();
-                findAllComment();
+                closeReviewUpdatePopup();
+                findAllReview();
             }
 
 
-            // 댓글 삭제
-            function deleteComment(id) {
+            // 리뷰 삭제
+            function deleteReview(id) {
 
-                if ( !confirm('선택하신 댓글을 삭제할까요?') ) {
+                if ( !confirm('선택하신 리뷰을 삭제할까요?') ) {
                     return false;
                 }
 
-                const postId = [[ ${post.id} ]];
-                const uri = `/posts/${postId}/comments/${id}`;
+                const bookId = [[ ${book.bookId} ]];
+                const uri = `/books/${bookId}/reviews/${id}`;
                 callApi(uri, 'delete');
                 alert('삭제되었습니다.');
-                findAllComment();
+                findAllReview();
             }
 
 
-            // 댓글 HTML draw
-            function drawComments(list) {
+            // 리뷰 HTML draw
+            function drawReviews(list) {
 
                 if ( !list.length ) {
-                    document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
+                    document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 리뷰이 없습니다.</p></div>';
                     return false;
                 }
 
-                let commentHtml = '';
+                let reviewHtml = '';
 
                 list.forEach(row => {
-                    commentHtml += `
+                    reviewHtml += `
                         <div>
                             <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
                             <p class="writer">
@@ -316,14 +317,14 @@
                             </p>
                             <div class="cont"><div class="txt_con">${row.content}</div></div>
                             <p class="func_btns">
-                                <button type="button" onclick="openCommentUpdatePopup(${row.id});" class="btns"><span class="icons icon_modify">수정</span></button>
-                                <button type="button" onclick="deleteComment(${row.id});" class="btns"><span class="icons icon_del">삭제</span></button>
+                                <button type="button" onclick="openReviewUpdatePopup(${row.id});" class="btns"><span class="icons icon_modify">수정</span></button>
+                                <button type="button" onclick="deleteReview(${row.id});" class="btns"><span class="icons icon_del">삭제</span></button>
                             </p>
                         </div>
                     `;
                 })
 
-                document.querySelector('.cm_list').innerHTML = commentHtml;
+                document.querySelector('.cm_list').innerHTML = reviewHtml;
             }
 
 
@@ -342,23 +343,23 @@
                 // 3. 첫/이전 페이지 버튼 추가
                 if (pagination.existPrevPage) {
                     html += `
-                        <a href="javascript:void(0);" onclick="findAllComment(1)" class="page_bt first">첫 페이지</a>
-                        <a href="javascript:void(0);" onclick="findAllComment(${pagination.startPage - 1})" class="page_bt prev">이전 페이지</a>
+                        <a href="javascript:void(0);" onclick="findAllReview(1)" class="page_bt first">첫 페이지</a>
+                        <a href="javascript:void(0);" onclick="findAllReview(${pagination.startPage - 1})" class="page_bt prev">이전 페이지</a>
                     `;
                 }
 
                 // 4. 페이지 번호 추가
                 html += '<p>';
                 for (let i = pagination.startPage; i <= pagination.endPage; i++) {
-                    html += `<a href="javascript:void(0);" onclick="findAllComment(${i});">${i}</a>`
+                    html += `<a href="javascript:void(0);" onclick="findAllReview(${i});">${i}</a>`
                 }
                 html += '</p>';
 
                 // 5. 다음/끝 페이지 버튼 추가
                 if (pagination.existNextPage) {
                     html += `
-                        <a href="javascript:void(0);" onclick="findAllComment(${pagination.endPage + 1});" class="page_bt next">다음 페이지</a>
-                        <a href="javascript:void(0);" onclick="findAllComment(${pagination.totalPageCount});" class="page_bt last">마지막 페이지</a>
+                        <a href="javascript:void(0);" onclick="findAllReview(${pagination.endPage + 1});" class="page_bt next">다음 페이지</a>
+                        <a href="javascript:void(0);" onclick="findAllReview(${pagination.totalPageCount});" class="page_bt last">마지막 페이지</a>
                     `;
                 }
 
@@ -372,8 +373,8 @@
                 currentPage.removeAttribute('onclick');
 
                 // 8. 페이지 URI 강제 변경
-                const postId = new URLSearchParams(location.search).get('id');
-                history.replaceState({}, '', location.pathname + `?id=${postId}&page=${currentPage.text}`);
+                const bookId = new URLSearchParams(location.search).get('id');
+                history.replaceState({}, '', location.pathname + `?id=${bookId}&page=${currentPage.text}`);
             }
 
         /*]]>*/

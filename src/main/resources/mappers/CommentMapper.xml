@@ -5,7 +5,7 @@
 
     <!-- tb_comment 테이블 전체 컬럼 -->
     <sql id="commentColumns">
-          id
+          reviewId
         , post_id
         , content
         , writer
@@ -16,11 +16,11 @@
 
 
     <!-- 댓글 저장 -->
-    <insert id="save" parameterType="com.study.domain.comment.CommentRequest" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.study.domain.comment.CommentRequest" useGeneratedKeys="true" keyProperty="reviewId">
         INSERT INTO tb_comment (
             <include refid="commentColumns" />
         ) VALUES (
-              #{id}
+              #{reviewId}
             , #{postId}
             , #{content}
             , #{writer}
