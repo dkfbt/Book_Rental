@@ -22,13 +22,13 @@ public class FileApiController {
     private final FileUtils fileUtils;
 
     // 파일 리스트 조회
-    @GetMapping("/posts/{postId}/files")
+    @GetMapping(value = {"/posts/{postId}/files", "/book/{bookId}/files"})
     public List<FileResponse> findAllFileByPostId(@PathVariable final Long postId) {
         return fileService.findAllFileByPostId(postId);
     }
 
     // 첨부파일 다운로드
-    @GetMapping("/posts/{postId}/files/{fileId}/download")
+    @GetMapping(value = {"/posts/{postId}/files/{fileId}/download", "/book/{bookId}/files/{fileId}/download"})
     public ResponseEntity<Resource> downloadFile(@PathVariable final Long postId, @PathVariable final Long fileId) {
         FileResponse file = fileService.findFileById(fileId);
         Resource resource = fileUtils.readFileAsResource(file);

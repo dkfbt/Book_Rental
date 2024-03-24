@@ -18,6 +18,7 @@ function hasCoda(value) {
  */
 function isValid(target, fieldName) {
     //공백이 아닌 값이 있으면 유효성검사 통과
+    console.log(`${target}, ${fieldName}에 대한 기본 유효성 검사`);
     if (target.value.trim()) {
         return true;
     }

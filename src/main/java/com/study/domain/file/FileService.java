@@ -31,6 +31,22 @@ public class FileService {
     }
 
     /**
+     * 책 썸네일 파일 정보 저장 (to Database)
+     * @param bookId - 도서 번호 (FK)
+     * @param files - 파일 정보 리스트
+     */
+    @Transactional
+    public void saveThumbnailFiles(final Long bookId, final List<FileRequest> files) {
+        if (CollectionUtils.isEmpty(files)) {
+            return;
+        }
+        for (FileRequest file : files) {
+            file.setBookId(bookId);
+        }
+        fileMapper.saveAll(files);
+    }
+
+    /**
      * 파일 리스트 조회
      * @param postId - 게시글 번호 (FK)
      * @return 파일 리스트

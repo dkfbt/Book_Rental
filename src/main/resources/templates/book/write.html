@@ -34,7 +34,7 @@
 
                             <tr>
                                 <th>제목 <span class="es">필수 입력</span></th>
-                                <td colspan="3"><input type="text" id="book_name" name="book_name" maxlength="50" placeholder="제목을 입력해 주세요." /></td>
+                                <td colspan="3"><input type="text" id="bookName" name="bookName" maxlength="50" placeholder="제목을 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
@@ -43,16 +43,21 @@
                             </tr>
 
                             <tr>
-                                <th>출판사</th>
-                                <td colspan="3"><textarea id="pb_comp" name="pb_comp" cols="50" rows="10" placeholder="출판사를 입력해 주세요."></textarea></td>
-                            </tr>
-                            <tr>
-                                <th>출판일</th>
-                                <td colspan="3"><textarea id="pb_date" name="pb_date" cols="50" rows="10" placeholder="출판일을 입력해 주세요."></textarea></td>
+                                <th>가격</th>
+                                <td colspan="3"><input type="text" id="price" name="price" maxlength="10" placeholder="가격(원)을 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
-                                <th>첨부파일</th>
+                                <th>출판사</th>
+                                <td colspan="3"><input type="text" id="pbComp" name="pbComp"  placeholder="출판사를 입력해 주세요." /></td>
+                            </tr>
+                            <tr>
+                                <th>출판일</th>
+                                <td colspan="3"><input type="date" id="pbDate" name="pbDate" placeholder="출판일을 입력해 주세요." /></td>
+                            </tr>
+
+                            <tr>
+                                <th>썸네일</th>
                                 <td colspan="3">
                                     <div class="file_list">
                                         <div>
@@ -151,7 +156,7 @@
                 }
 
                 const form = document.getElementById('saveForm');
-                const fields = ['bookid', 'isbn', 'book_name', 'cover_file', 'writer' ];
+                const fields = ['bookId', 'isbn', 'bookName', 'cover_file', 'writer' ];
                 form.createdDate.value = dayjs(book.createdDate).format('YYYY-MM-DD HH:mm');
 
                 fields.forEach(field => {
@@ -169,7 +174,7 @@
             // 도서 저장(수정)
             function saveBook() {
                 const form = document.getElementById('saveForm');
-                const fields = [form.isbn, form.book_name];
+                const fields = [form.isbn, form.bookName];
                 const fieldNames = ['ISBN', '제목'];
 
                 for (let i = 0, len = fields.length; i < len; i++) {
@@ -185,7 +190,6 @@
                 })
 
                 document.getElementById('saveBtn').disabled = true;
-                form.noticeYn.value = form.isNotice.checked;
                 form.removeFileIds.value = removeFileId.getAll().join();
                 form.action = [[ ${book == null} ]] ? '/book/save.do' : '/book/update.do';
                 form.submit();

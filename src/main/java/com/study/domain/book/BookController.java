@@ -81,7 +81,7 @@ public class BookController {
     public String saveBook(final BookRequest params, Model model) {
         Long id = bookService.saveBook(params);
         List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
-        fileService.saveFiles(id, files);
+        fileService.saveThumbnailFiles(id, files);  //파일첨부와 거의 동일하게 복제
         MessageDto message = new MessageDto("도서등록이 완료되었습니다.", "/book/list.do", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);
     }

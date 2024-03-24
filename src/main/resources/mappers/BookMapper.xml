@@ -54,12 +54,12 @@
 
 
     <!-- 도서 저장 -->
-    <insert id="save" parameterType="com.study.domain.book.BookRequest" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.study.domain.book.BookRequest" useGeneratedKeys="true" keyProperty="bookId">
         /* bookMapper.save */
         INSERT INTO tb_book (
             <include refid="bookColumns" />
         ) VALUES (
-            , NULL
+              #{bookId}
             , #{isbn}
             , #{bookName}
             , #{coverFile}
@@ -68,9 +68,9 @@
             , #{pbDate}
             , #{price}
             , NOW()
-            , ''
+            , NULL
             , NOW()
-            , ''
+            , NULL
         )
     </insert>
 

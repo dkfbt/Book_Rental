@@ -60,7 +60,7 @@
 
                 <!--/* 버튼 */-->
                 <p class="btn_set tr">
-                    <a th:href="@{/post/write.do}" class="btns btn_st3 btn_mid">글쓰기</a>
+                    <a th:href="@{/book/write.do}" class="btns btn_st3 btn_mid">도서등록</a>
                 </p>
             </section>
         </div> <!--/* .content */-->
@@ -75,7 +75,7 @@
             window.onload = () => {
                 setQueryStringParams();
 
-                findAllPost();
+                findAllBook();
             }
 
 
@@ -96,8 +96,8 @@
             }
 
 
-            // 게시글 도서 리스트 조회
-            function findAllPost() {
+            // 도서 도서 리스트 조회
+            function findAllBook() {
 
                 // 1. PagingResponse의 멤버인 List<T> 타입의 list를 의미
                 const list = [[ ${response.list} ]];
@@ -114,7 +114,7 @@
                 // 4. @ModelAttribute를 이용해서 뷰(HTML)로 전달한 SearchDto 타입의 객체인 params를 의미
                 const params = [[ ${params} ]];
 
-                // 5. 도서 리스트에 출력되는 게시글 번호를 처리하기 위해 사용되는 변수 (도서 리스트에서 번호는 페이지 정보를 이용해서 계산해야 함)
+                // 5. 도서 리스트에 출력되는 도서 번호를 처리하기 위해 사용되는 변수 (도서 리스트에서 번호는 페이지 정보를 이용해서 계산해야 함)
                 let num = pagination.totalRecordCount - ((params.page - 1) * params.recordSize);
 
                 // 6. 도서 리스트 데이터 렌더링
@@ -133,7 +133,7 @@
 
                 /*
                  * 2. 기존에 타임리프(Thymeleaf)를 이용해서 도서 리스트 데이터를 그리던 것과 유사한 로직
-                 *    기존에는 게시글 번호를 (전체 데이터 수 - loop의 인덱스 번호)로 처리했으나, 현재는 (전체 데이터 수 - ((현재 페이지 번호 - 1) * 페이지당 출력할 데이터 개수))로 정밀히 계산
+                 *    기존에는 도서 번호를 (전체 데이터 수 - loop의 인덱스 번호)로 처리했으나, 현재는 (전체 데이터 수 - ((현재 페이지 번호 - 1) * 페이지당 출력할 데이터 개수))로 정밀히 계산
                  */
                 list.forEach(row => {
                     html += `
@@ -217,7 +217,7 @@
                 }
 
                 /*
-                 * 3. location.pathname : 도서 리스트 페이지의 URI("/post/list.do")를 의미
+                 * 3. location.pathname : 도서 리스트 페이지의 URI("/book/list.do")를 의미
                  *    new URLSearchParams(queryParams).toString() : queryParams의 모든 프로퍼티(key-value)를 쿼리 스트링으로 변환
                  *    URI + 쿼리 스트링에 해당하는 주소로 이동
                  *    (해당 함수가 리턴해주는 값을 브라우저 콘솔(console)에 찍어보시면 쉽게 이해하실 수 있습니다.)
@@ -226,10 +226,10 @@
             }
 
 
-            // 게시글 상세 페이지로 이동
+            // 도서 상세 페이지로 이동
             function goViewPage(id) {
                 const queryString = (location.search) ? location.search + `&id=${id}` : `?id=${id}`;
-                location.href = '/post/view.do' + queryString;
+                location.href = '/book/view.do' + queryString;
             }
 
         /*]]>*/
