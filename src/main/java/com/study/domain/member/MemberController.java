@@ -1,8 +1,5 @@
 package com.study.domain.member;
 
-import com.study.common.dto.SearchDto;
-import com.study.common.paging.PagingResponse;
-import com.study.domain.post.PostResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -10,15 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 
 @Controller
@@ -47,7 +41,7 @@ public class MemberController {
         if (member != null) {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", member);
-            session.setMaxInactiveInterval(60 * 30);
+            session.setMaxInactiveInterval(60 * 120);
         }
 
         return member;
@@ -94,5 +88,23 @@ public class MemberController {
     public int countMemberByLoginId(@RequestParam final String loginId) {
         return memberService.countMemberByLoginId(loginId);
     }
+
+    // 회원이 보는 마이페이지.  admin에도 mypage가 생길것이라 이렇게 url만듦
+    @GetMapping("/member/mypage.do")
+    public String myPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        MemberResponse loginMember = (MemberResponse) session.getAttribute("loginMember");
+        System.out.println("로그인멤버 : " +loginMember);
+        if (loginMember != null) {
+            model.addAttribute("loginMember", loginMember);
+            return "member/mypage";
+        } else {
+            // loginMember가 null인 경우에 대한 처리
+            // 예: 빈 MemberResponse 객체를 추가하거나, 로그인 페이지로 리다이렉트 등
+            return "redirect:/login.do";
+        }
+
+    }
+
 
 }

@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.logging.Logger;
+
 
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
@@ -18,6 +20,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         // 2. 회원 정보 체크
         if (member == null || member.getDeleteYn() == true) {
+            System.out.println("세션에 회원정보가 없어서 로그인 페이지로 이동");
             response.sendRedirect("/login.do");
             return false;
         }
