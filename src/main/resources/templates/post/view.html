@@ -329,7 +329,7 @@
 
             // 페이지네이션 HTML draw
             function drawPage(pagination, page) {
-
+                console.log(`drawPage함수. pagination = ${pagination},  page =  ${page}`);
                 // 1. 필수 파라미터가 없는 경우, 페이지네이션 HTML을 제거한 후 로직 종료
                 if ( !pagination || !page ) {
                     document.querySelector('.paging').innerHTML = '';

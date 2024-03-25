@@ -131,7 +131,7 @@ function getJson(uri, params) {
  * @returns json - 결과 데이터
  */
 function callApi(uri, method, params) {
-
+    console.log(`callApi호출. uri=${uri}, method=${method}, params=${params}`);
     let json = {}
 
      $.ajax({
