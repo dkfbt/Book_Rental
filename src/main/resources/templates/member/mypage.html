@@ -18,23 +18,24 @@
 									<colgroup>
 										<col style="width:30%;" /><col style="width:70%;" />
 									</colgroup>
+									<input th:value="*{id}" type="hidden" id="id" name="id"  />
 									<tbody>
 										<tr>
-											<th scope="row">아이디<span class="es">필수 입력</span></th>
+											<th scope="row">아이디<span class="es">변경불가</span></th>
 											<td>
-												<input th:value="*{loginId}" type="text" id="userLoginId" name="loginId" placeholder="아이디" maxlength="20" style="width: 80%;"/>
+												<input th:value="*{loginId}" type="text" id="userLoginId" name="loginId" class="required" placeholder="아이디" maxlength="20" style="width: 80%;" readonly />
 											</td>
 										</tr>
 										<tr>
-											<th scope="row">비밀번호<span class="es">필수 입력</span></th>
-											<td><input type="password" id="userPassword" name="password" class="required" placeholder="비밀번호" maxlength="30"/></td>
+											<th scope="row">비밀번호</th>
+											<td><input type="password" id="userPassword" name="password"  placeholder="비밀번호" maxlength="30"/></td>
 										</tr>
 										<tr>
-											<th scope="row">비밀번호 재입력<span class="es">필수 입력</span></th>
-											<td><input id="passwordCheck" name="passwordCheck" class="required" placeholder="비밀번호 재입력" maxlength="30"/></td>
+											<th scope="row">비밀번호 재입력</th>
+											<td><input id="passwordCheck" name="passwordCheck" placeholder="비밀번호 재입력" maxlength="30"/></td>
 										</tr>
 										<tr>
-											<th scope="row">이름<span class="es">필수 입력</span></th>
+											<th scope="row">이름</th>
 											<td><input th:value="*{name}" type="text" id="userName" name="name" class="required" placeholder="이름" maxlength="10"/></td>
 										</tr>
 										<tr>
@@ -54,7 +55,7 @@
 										</tr>
 										<tr>
 											<th scope="row">생년월일</th>
-											<td><input th:value="*{birthday}" type="text" id="birthday" name="birthday" placeholder="숫자 8자리 입력( 예: 19970925 )" maxlength="8" /></td>
+											<td><input th:value="*{birthday}" type="date" id="birthday" name="birthday" placeholder="숫자 8자리 입력( 예: 19970925 )" maxlength="8" /></td>
 										</tr>
 										<tr>
 											<th scope="row">전화번호</th>
@@ -86,7 +87,7 @@
 								<button type="button" class="btns btn_bdr2" onclick="reset();">취소</button>
 							</p>
 						</div>
-						<button type="button" class="btn_close" onclick="closeSignupPopup();"><span><i class="far fa-times-circle"></i></span></button>
+						<button type="button" class="btn_close" onclick="withdrawalPopup();"><span><i class="far fa-times-circle"></i>회원탈퇴</span></button>
 					</form>
 			</section>
 		</div>
@@ -115,8 +116,6 @@
 			const fields = form.querySelectorAll('input:not([type="radio"]).required');
 			const fieldNames = {
 				userId: '아이디',
-				password: '비밀번호',
-				passwordCheck: '비밀번호 재입력',
 				name: '이름'
 			};
 
@@ -124,12 +123,7 @@
 				isValid(field, fieldNames[field.name]);
 			}
 
-
-			if (form.loginId.readOnly === false) {
-				alert('아이디 중복 체크를 완료해 주세요.');
-				return false;
-			}
-
+			//비밀번호와 비밀번호재입력칸이 둘다 값이 있는데 값이 서로 다를 경우
 			if ((form.userPassword.value != null && form.userPassword.value != '')  && (form.userPassword.value !== form.passwordCheck.value)) {
 				alert('비밀번호와 확인비밀번호가 일치하지 않습니다.');
 				form.userPassword.focus();
@@ -161,7 +155,7 @@
 			params.birthday = params.birthday.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
 
 			// 4. Save API 호출
-			callApi('/members/{id}', 'post', params);
+			callApi(`/members/${params.id}`, 'patch', params);
 			alert('회원정보 수정되었습니다.');
 		}
 
