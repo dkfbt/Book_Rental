@@ -14,7 +14,7 @@
             <section>
                 <form id="saveForm" method="post" autocomplete="off" enctype="multipart/form-data">
                     <!--/* 도서 수정인 경우, 서버로 전달할 도서 번호 (PK) */-->
-                    <input type="hidden" id="id" name="id" th:if="${book != null}" th:value="${book.bookId}" />
+                    <input type="hidden" id="bookId" name="bookId" th:if="${book != null}" th:value="${book.bookId}" />
                     <!--/* 삭제 처리할 파일 번호 */-->
                     <input type="hidden" id="removeFileIds" name="removeFileIds" />
                     <table class="tb tb_row">
@@ -22,11 +22,6 @@
                             <col style="width:15%;" /><col style="width:35%;" /><col style="width:15%;" /><col style="width:35%;" />
                         </colgroup>
                         <tbody>
-                            <tr>
-                                <th scope="row">등록일</th>
-                                <td colspan="3"><input type="text" id="createdDate" name="createdDate" readonly /></td>
-                            </tr>
-
                             <tr>
                                 <th>ISBN <span class="es">필수 입력</span></th>
                                 <td colspan="3"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
@@ -72,6 +67,18 @@
                                         </div>
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">등록일</th>
+                                <td><input type="text" id="crDate" name="crDate" readonly /></td>
+                                <th scope="row">등록자</th>
+                                <td><input type="text" id="crMemberName" name="crMemberName" readonly /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">수정일</th>
+                                <td><input type="text" id="mdDate" name="mdDate" readonly /></td>
+                                <th scope="row">수정자</th>
+                                <td><input type="text" id="mdMemberName" name="mdMemberName" readonly /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -122,7 +129,7 @@
                 }
 
                 // 2. API 호출
-                const response = getJson(`/books/${book.id}/files`);
+                const response = getJson(`/books/${book.bookId}/files`);
 
                 // 3. 로직 종료
                 if ( !response.length ) {
@@ -156,8 +163,10 @@
                 }
 
                 const form = document.getElementById('saveForm');
-                const fields = ['bookId', 'isbn', 'bookName', 'cover_file', 'writer' ];
-                form.createdDate.value = dayjs(book.createdDate).format('YYYY-MM-DD HH:mm');
+                //화면에 매핑할 컬럼들
+                const fields = ['bookId', 'isbn', 'bookName', 'writer', 'pbComp', 'pbDate', 'price' , 'crMemberName', 'mdMemberName'];
+                form.crDate.value = dayjs(book.crDate).format('YYYY-MM-DD HH:mm');
+                form.mdDate.value = dayjs(book.mdDate).format('YYYY-MM-DD HH:mm');
 
                 fields.forEach(field => {
                     form[field].value = book[field];
@@ -167,7 +176,7 @@
 
             // 등록일 초기화
             function initCreatedDate() {
-                document.getElementById('createdDate').value = dayjs().format('YYYY-MM-DD');
+                document.getElementById('crDate').value = dayjs().format('YYYY-MM-DD');
             }
 
 

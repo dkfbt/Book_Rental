@@ -80,8 +80,14 @@
         /* bookMapper.findById */
         SELECT
             <include refid="bookColumns" />
+           , b.name as cr_member_name
+           , c.name as md_member_name
         FROM
-            tb_book
+            tb_book a
+        LEFT JOIN tb_member b
+          on a.cr_memberid = b.id
+        LEFT JOIN tb_member c
+          on a.md_memberid = c.id
         WHERE
             bookid = #{bookId}
     </select>
@@ -108,7 +114,7 @@
     <!-- 도서 삭제 -->
     <delete id="deleteById" parameterType="long">
         /* bookMapper.deleteById */
-        DELETE tb_book
+        DELETE FROM tb_book
         WHERE
             bookid = #{bookId}
     </delete>

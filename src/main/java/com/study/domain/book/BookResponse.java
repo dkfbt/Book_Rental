@@ -2,6 +2,7 @@ package com.study.domain.book;
 
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,12 +14,15 @@ public class BookResponse {
     private String coverFile;
     private String writer;
     private String pbComp;
-    private LocalDateTime pbDate;
+    private LocalDate pbDate;
     private Integer price;
 
-    private LocalDateTime crDate;// 생성일시
+    private LocalDateTime crDate;   // 생성일시
     private Long crMemberId;
-    private Long mdMemberId;// 최종 수정일시
-    private LocalDateTime mdDate;
+    private LocalDateTime mdDate;   // 최종 수정일시
+    private Long mdMemberId;
+    private String crMemberName;    //생성자 이름
+    private String mdMemberName;    //수정자 이름
+
 
 }

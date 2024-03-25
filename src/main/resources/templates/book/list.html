@@ -142,10 +142,10 @@
                             <td>${num--}</td>
                             <td>${row.coverFile}</td>
                             <td class="tl">${row.isbn}</td>
-                            <td class="tl"><a href="javascript:void(0);" onclick="goViewPage(${row.bookId});">${row.bookName}</a></td>
+                            <td class="tl"><strong><a href="javascript:void(0);" onclick="goViewPage(${row.bookId});">${row.bookName}</a></strong></td>
                             <td>${row.writer}</td>
                             <td>${row.pbComp}</td>
-                            <td>${dayjs(row.pbDate).format('YYYY-MM-DD')}</td>
+                            <td>${dayjs(row.pbDate).isValid() ? dayjs(row.pbDate).format('YYYY-MM-DD') : ''}</td>
                             <td>${row.price}</td>
                         </tr>
                     `;
