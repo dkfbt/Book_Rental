@@ -130,7 +130,7 @@
                 // 3. 파일 영역 추가
                 let fileHtml = '<div class="file_down"><div class="cont">';
                 response.forEach(row => {
-                    fileHtml += `<a href="/books/${bookId}/files/${row.id}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.originalName}</a>`;
+                    fileHtml += `<a href="/books/${bookId}/files/${row.reviewId}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.originalName}</a>`;
                 })
                 fileHtml += '</div></div>';
 
@@ -238,14 +238,14 @@
 
 
             // 리뷰 수정 팝업 open
-            function openReviewUpdatePopup(id) {
+            function openReviewUpdatePopup(reviewId) {
 
                 const bookId = [[ ${book.bookId} ]];
-                const uri = `/books/${bookId}/reviews/${id}`;
+                const uri = `/books/${bookId}/reviews/${reviewId}`;
                 const response = getJson(uri);
                 document.getElementById('modalWriter').value = response.writer;
                 document.getElementById('modalContent').value = response.content;
-                document.getElementById('reviewUpdateBtn').setAttribute('onclick', `updateReview(${id})`);
+                document.getElementById('reviewUpdateBtn').setAttribute('onclick', `updateReview(${reviewId})`);
                 layerPop('reviewUpdatePopup');
             }
 
@@ -259,7 +259,7 @@
 
 
             // 리뷰 수정
-            function updateReview(id) {
+            function updateReview(reviewId) {
 
                 const writer = document.getElementById('modalWriter');
                 const content = document.getElementById('modalContent');
@@ -267,9 +267,9 @@
                 isValid(content, '수정할 내용');
 
                 const bookId = [[ ${book.bookId} ]];
-                const uri = `/books/${bookId}/reviews/${id}`;
+                const uri = `/books/${bookId}/reviews/${reviewId}`;
                 const params = {
-                    id : id,
+                    reviewId : reviewId,
                     bookId : bookId,
                     content : content.value,
                     writer : writer.value
@@ -317,8 +317,8 @@
                             </p>
                             <div class="cont"><div class="txt_con">${row.content}</div></div>
                             <p class="func_btns">
-                                <button type="button" onclick="openReviewUpdatePopup(${row.id});" class="btns"><span class="icons icon_modify">수정</span></button>
-                                <button type="button" onclick="deleteReview(${row.id});" class="btns"><span class="icons icon_del">삭제</span></button>
+                                <button type="button" onclick="openReviewUpdatePopup(${row.reviewId});" class="btns"><span class="icons icon_modify">수정</span></button>
+                                <button type="button" onclick="deleteReview(${row.reviewId});" class="btns"><span class="icons icon_del">삭제</span></button>
                             </p>
                         </div>
                     `;
