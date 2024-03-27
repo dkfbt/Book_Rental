@@ -19,7 +19,7 @@
                             <select id="searchType" name="searchType" title="검색 유형 선택">
                                 <option value="">전체 검색</option>
                                 <option value="isbn">isbn</option>
-                                <option value="book_name">제목</option>
+                                <option value="bookName">제목</option>
                                 <option value="writer">저자</option>
                             </select>
                             <input type="text" id="keyword" name="keyword" placeholder="키워드를 입력해 주세요." title="키워드 입력" />
@@ -140,7 +140,7 @@
                         <tr>
                             <td><input type="checkbox" /></td>
                             <td>${num--}</td>
-                            <td>${row.coverFile}</td>
+                            <td><img th:src="@{/uploads/{filename}(filename=${row.coverFile})" alt="Thumbnail"></td>
                             <td class="tl">${row.isbn}</td>
                             <td class="tl"><strong><a href="javascript:void(0);" onclick="goViewPage(${row.bookId});">${row.bookName}</a></strong></td>
                             <td>${row.writer}</td>
