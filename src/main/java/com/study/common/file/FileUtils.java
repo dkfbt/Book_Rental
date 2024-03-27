@@ -2,6 +2,7 @@ package com.study.common.file;
 
 import com.study.domain.file.FileRequest;
 import com.study.domain.file.FileResponse;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
@@ -163,6 +164,18 @@ public class FileUtils {
             return resource;
         } catch (MalformedURLException e) {
             throw new RuntimeException("file not found : " + filePath.toString());
+        }
+    }
+
+
+    public void resizeImage(String inputPath, String outputPath) {
+        try {
+            Thumbnails.of(inputPath)
+                      .height(200) // 세로 크기를 200픽셀로 고정
+                      .keepAspectRatio(true) // 비율 유지
+                      .toFile(outputPath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

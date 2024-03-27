@@ -27,6 +27,7 @@ dependencies {
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  /* Log4JDBC */
 	implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.6'  /* spring-security-crypto */
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'net.coobird:thumbnailator:0.4.14'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
