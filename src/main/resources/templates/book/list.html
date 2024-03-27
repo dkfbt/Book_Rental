@@ -143,7 +143,7 @@
                             <td>${num--}</td>
                             <!--<td><img th:src="@{/uploads/{filename}(filename=${row.coverFile})" alt="Thumbnail"></td>-->
                             <!--<td><img th:src="@{/uploads/${row.coverFile}}" alt="Thumbnail"></td>-->
-                            <td><img src="/uploads/${row.coverFile}" alt="Thumbnail" class="resize-img"></td>
+                            <td>${row.coverFile ? `<img src="/uploads/${row.coverFile}" alt="Thumbnail" class="resize-img">` : ''}</td>
                             <td class="tl">${row.isbn}</td>
                             <td class="tl"><strong><a href="javascript:void(0);" onclick="goViewPage(${row.bookId});">${row.bookName}</a></strong></td>
                             <td>${row.writer}</td>
