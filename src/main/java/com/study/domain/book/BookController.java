@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class BookController {
     public String openBookList(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BookResponse> response = bookService.findAllBooks(params);
         model.addAttribute("response", response);
+        //파일 이미지 가져와서 뿌려줘야함. 또는 타임리프쪽에서 ajax로
         return "book/list";
     }
 
@@ -79,8 +81,12 @@ public class BookController {
     // 신규 도서 생성
     @PostMapping("/book/save.do")
     public String saveBook(final BookRequest params, Model model) {
-        Long id = bookService.saveBook(params);
+
         List<FileRequest> files = fileUtils.uploadFiles(params.getFiles());
+        //썸네일 저장할때의 절대경로
+        params.setCoverFile(files.get(0).getUploadDateFolder() +"/"+ files.get(0).getSaveName());
+
+        Long id = bookService.saveBook(params);
         fileService.saveThumbnailFiles(id, files);  //파일첨부와 거의 동일하게 복제
         MessageDto message = new MessageDto("도서등록이 완료되었습니다.", "/book/list.do", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);

@@ -74,3 +74,10 @@ footer {background:#fff; box-shadow:0 0 20px rgba(80,80,80,0.1); height:40px; li
 #login_box .login_input ul li input:-moz-placeholder {color:#999; font-size:14px;}/* moz */
 #login_box .login_input ul li input:-ms-input-placeholder {color:#999; font-size:14px;}/* IE10+ */
 #login_wrap .copyright {color:#888; position:absolute; bottom:30px; width:100%; text-align:center;}
+
+/* 썸네일용 리사이즈 */
+.resize-img {
+    height: 80px; /* 세로 크기 고정 */
+    width: auto; /* 가로 크기 자동 조절 */
+    object-fit: cover; /* 이미지가 비율을 유지하며 컨테이너를 채우도록 함 */
+}

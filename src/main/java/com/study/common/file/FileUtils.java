@@ -54,7 +54,7 @@ public class FileUtils {
 
         String saveName = generateSaveFilename(multipartFile.getOriginalFilename());
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")).toString();
-        String uploadPath = getUploadPath(today) + File.separator + saveName;
+        String uploadPath = getUploadPath(today) + File.separator + saveName;   //오늘날짜 + 파일전체명
         File uploadFile = new File(uploadPath);
 
         try {
