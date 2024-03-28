@@ -89,7 +89,13 @@ footer {background:#fff; box-shadow:0 0 20px rgba(80,80,80,0.1); height:40px; li
 }
 
 thumbnailPreviewContainer {
-    width: 90%; /* 미리보기 이미지 크기 조정 */
+    width: 80%; /* 미리보기 이미지 크기 조정 */
     height: auto;
     margin: 10px 0;
+}
+.smallThumbnail{
+    width : 10vw;
+}
+.middleThumbnail{
+    width : 25vw;
 }

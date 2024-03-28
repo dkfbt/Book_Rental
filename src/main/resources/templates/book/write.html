@@ -27,7 +27,9 @@
                                 <td colspan="2"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
                                 <td rowspan="7">
                                     <!-- 썸네일 미리보기 영역 -->
-                                    <div id="thumbnailPreviewContainer"></div>
+                                    <div id="thumbnailPreviewContainer">
+                                        <img class="middleThumbnail" th:src="@{/uploads/{filename}(filename=${book.coverFile})}" alt="Thumbnail" />
+                                    </div>
                                 </td>
                             </tr>
 
@@ -75,6 +77,12 @@
                                 <td><input type="text" id="crDate" name="crDate" readonly /></td>
                                 <th scope="row">등록자</th>
                                 <td><input type="text" id="crMemberName" name="crMemberName" readonly /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">수정일</th>
+                                <td><input type="text" id="mdDate" name="mdDate" readonly /></td>
+                                <th scope="row">수정자</th>
+                                <td><input type="text" id="mdMemberName" name="mdMemberName" readonly /></td>
                             </tr>
                         </tbody>
                     </table>

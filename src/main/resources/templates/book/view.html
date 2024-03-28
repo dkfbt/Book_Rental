@@ -41,8 +41,8 @@
                         </tr>
                         <tr>
                             <th scope="row">썸네일</th>
-                            <td id="files" colspan="3">
-
+                            <td colspan="3">
+                                <img class="smallThumbnail" th:src="@{/uploads/{filename}(filename=${book.coverFile})}" alt="Thumbnail" />
                             </td>
                         </tr>
                     </tbody>
