@@ -24,46 +24,48 @@
                         <tbody>
                             <tr>
                                 <th>ISBN <span class="es">필수 입력</span></th>
-                                <td colspan="3"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
+                                <td colspan="2"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
+                                <td rowspan="7">
+                                    <!-- 썸네일 미리보기 영역 -->
+                                    <div id="thumbnailPreviewContainer"></div>
+                                </td>
                             </tr>
 
                             <tr>
                                 <th>제목 <span class="es">필수 입력</span></th>
-                                <td colspan="3"><input type="text" id="bookName" name="bookName" maxlength="50" placeholder="제목을 입력해 주세요." /></td>
+                                <td colspan="2"><input type="text" id="bookName" name="bookName" maxlength="50" placeholder="제목을 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
                                 <th>저자</th>
-                                <td colspan="3"><input type="text" id="writer" name="writer" maxlength="10" placeholder="저자를 입력해 주세요." /></td>
+                                <td colspan="2"><input type="text" id="writer" name="writer" maxlength="10" placeholder="저자를 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
                                 <th>가격</th>
-                                <td colspan="3"><input type="text" id="price" name="price" maxlength="10" placeholder="가격(원)을 입력해 주세요." /></td>
+                                <td colspan="2"><input type="text" id="price" name="price" maxlength="10" placeholder="가격(원)을 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
                                 <th>출판사</th>
-                                <td colspan="3"><input type="text" id="pbComp" name="pbComp"  placeholder="출판사를 입력해 주세요." /></td>
+                                <td colspan="2"><input type="text" id="pbComp" name="pbComp"  placeholder="출판사를 입력해 주세요." /></td>
                             </tr>
                             <tr>
                                 <th>출판일</th>
-                                <td colspan="3"><input type="date" id="pbDate" name="pbDate" placeholder="출판일을 입력해 주세요." /></td>
+                                <td colspan="2"><input type="date" id="pbDate" name="pbDate" placeholder="출판일을 입력해 주세요." /></td>
                             </tr>
 
                             <tr>
                                 <th>썸네일</th>
-                                <td colspan="3">
+                                <td colspan="2">
                                     <div class="file_list">
                                         <div>
                                             <div class="file_input">
                                                 <input type="text" readonly />
                                                 <label> 첨부파일
-                                                    <input type="file" name="files" onchange="selectFile(this);" />
+                                                    <input type="file" name="files" onchange="updateThumbnailPreview(this, 'thumbnailPreviewContainer')" />
                                                 </label>
                                             </div>
-                                            <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
-                                            <button type="button" onclick="addFile();" class="btns fn_add_btn"><span>파일 추가</span></button>
                                         </div>
                                     </div>
                                 </td>
@@ -73,12 +75,6 @@
                                 <td><input type="text" id="crDate" name="crDate" readonly /></td>
                                 <th scope="row">등록자</th>
                                 <td><input type="text" id="crMemberName" name="crMemberName" readonly /></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">수정일</th>
-                                <td><input type="text" id="mdDate" name="mdDate" readonly /></td>
-                                <th scope="row">수정자</th>
-                                <td><input type="text" id="mdMemberName" name="mdMemberName" readonly /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -243,40 +239,51 @@
                 }
             }
 
+            function uploadFile(input) {
+                if (!input.files || input.files.length === 0) {
+                    return;
+                }
 
-            // 파일 추가
-            function addFile() {
-                const fileDiv = document.createElement('div');
-                fileDiv.innerHTML =`
-                    <div class="file_input">
-                        <input type="text" readonly />
-                        <label> 첨부파일
-                            <input type="file" name="files" onchange="selectFile(this);" />
-                        </label>
-                    </div>
-                    <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
-                `;
-                document.querySelector('.file_list').appendChild(fileDiv);
+                var file = input.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+
+                // 'YOUR_ENDPOINT_HERE'를 실제 파일을 처리할 서버의 엔드포인트로 변경하세요.
+                fetch('YOUR_ENDPOINT_HERE', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    // 업로드 성공 시 처리
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // 업로드 실패 시 처리
+                });
             }
 
 
-            // 파일 삭제
-            function removeFile(element, id) {
+            // 썸네일 미리보기 업데이트 함수
+            function updateThumbnailPreview(input, previewContainerId) {
+                var previewContainer = document.getElementById(previewContainerId);
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                // 1. 삭제할 파일 id 추가
-                if (id) {
-                    removeFileId.add(id);
-                }
+                    reader.onload = function (e) {
+                        previewContainer.innerHTML = '<img id="thumbNailImg" src="' + e.target.result + '">';
+                    };
 
-                // 2. 파일 영역 초기화 & 삭제
-                const fileAddBtn = element.nextElementSibling;
-                if (fileAddBtn) {
-                    const inputs = element.previousElementSibling.querySelectorAll('input');
-                    inputs.forEach(input => input.value = '')
-                    return false;
+                    reader.readAsDataURL(input.files[0]);
                 }
-                element.parentElement.remove();
             }
+
 
         /*]]>*/
         </script>

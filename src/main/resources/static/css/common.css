@@ -81,3 +81,15 @@ footer {background:#fff; box-shadow:0 0 20px rgba(80,80,80,0.1); height:40px; li
     width: auto; /* 가로 크기 자동 조절 */
     object-fit: cover; /* 이미지가 비율을 유지하며 컨테이너를 채우도록 함 */
 }
+
+#thumbNailImg {
+    width: 80%; /* 미리보기 이미지 크기 조정 */
+    height: auto;
+    margin: 10px 0;
+}
+
+thumbnailPreviewContainer {
+    width: 90%; /* 미리보기 이미지 크기 조정 */
+    height: auto;
+    margin: 10px 0;
+}
