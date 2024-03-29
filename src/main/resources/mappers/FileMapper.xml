@@ -55,7 +55,7 @@
 
     <!-- 썸네일 리스트 조회 -->
     <select id="findAllByBookId" parameterType="long" resultType="com.study.domain.file.FileResponse">
-        /* FileMapper.findAllByPostId */
+        /* FileMapper.findAllByBookId */
         SELECT
             <include refid="fileColumns" />
         FROM

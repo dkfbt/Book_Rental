@@ -21,10 +21,16 @@ public class FileApiController {
     private final FileService fileService;
     private final FileUtils fileUtils;
 
-    // 파일 리스트 조회
-    @GetMapping(value = {"/posts/{postId}/files", "/books/{postId}/files"})
+    // 게시글 - 파일 리스트 조회
+    @GetMapping(value = {"/posts/{postId}/files"})
     public List<FileResponse> findAllFileByPostId(@PathVariable final Long postId) {
         return fileService.findAllFileByPostId(postId);
+    }
+
+    // 도서 썸네일 파일 리스트 조회
+    @GetMapping(value = {"/books/{bookId}/files"})
+    public List<FileResponse> findAllFileByBookId(@PathVariable final Long bookId) {
+        return fileService.findAllFileByBookId(bookId);
     }
 
     // 첨부파일 다운로드

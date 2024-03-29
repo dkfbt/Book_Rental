@@ -27,8 +27,12 @@
                                 <td colspan="2"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
                                 <td rowspan="7">
                                     <!-- 썸네일 미리보기 영역 -->
-                                    <div id="thumbnailPreviewContainer">
-                                        <img class="middleThumbnail" th:src="@{/uploads/{filename}(filename=${book.coverFile})}" alt="Thumbnail" />
+                                    <div id="thumbnailPreviewContainer" th:if="${book.coverFile}">
+                                        <img class="middleThumbnail" id="middleThumbnail"  th:src="@{/uploads/{filename}(filename=${book.coverFile})}" alt="Thumbnail" />
+                                    </div>
+                                    <div th:unless="${book.coverFile}">
+                                        <!-- 여기에는 썸네일이 없을 경우 표시할 대체 텍스트나 이미지를 넣을 수 있습니다. -->
+                                        No Image Available
                                     </div>
                                 </td>
                             </tr>
@@ -68,6 +72,7 @@
                                                     <input type="file" name="files" onchange="updateThumbnailPreview(this, 'thumbnailPreviewContainer')" />
                                                 </label>
                                             </div>
+                                            <button type="button" onclick="removeFile(this, 'middleThumbnail');" class="btns del_btn"><span>삭제</span></button>
                                         </div>
                                     </div>
                                 </td>
@@ -219,7 +224,7 @@
 
             // 파일 선택
             function selectFile(element, id) {
-
+                console.log("selectFile");
                 const file = element.files[0];
                 const filename = element.closest('.file_input').firstElementChild;
 
@@ -247,37 +252,6 @@
                 }
             }
 
-            function uploadFile(input) {
-                if (!input.files || input.files.length === 0) {
-                    return;
-                }
-
-                var file = input.files[0];
-                var formData = new FormData();
-                formData.append('file', file);
-
-                // 'YOUR_ENDPOINT_HERE'를 실제 파일을 처리할 서버의 엔드포인트로 변경하세요.
-                fetch('YOUR_ENDPOINT_HERE', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Success:', data);
-                    // 업로드 성공 시 처리
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // 업로드 실패 시 처리
-                });
-            }
-
-
             // 썸네일 미리보기 업데이트 함수
             function updateThumbnailPreview(input, previewContainerId) {
                 var previewContainer = document.getElementById(previewContainerId);
@@ -289,6 +263,14 @@
                     };
 
                     reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            // 파일 삭제
+            function removeFile(element, id) {
+                console.log("removeFile함수. id : ", id);
+                if(id){
+                    document.getElementById(id).remove();
                 }
             }
 

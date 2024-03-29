@@ -21,6 +21,13 @@ public interface FileMapper {
     List<FileResponse> findAllByPostId(Long postId);
 
     /**
+     * 썸네일 파일 리스트 조회
+     * @param postId - 게시글 번호 (FK)
+     * @return 파일 리스트
+     */
+    List<FileResponse> findAllByBookId(Long bookId);
+
+    /**
      * 파일 리스트 조회
      * @param ids - PK 리스트
      * @return 파일 리스트

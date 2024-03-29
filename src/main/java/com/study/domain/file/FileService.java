@@ -56,6 +56,15 @@ public class FileService {
     }
 
     /**
+     * 썸네일 파일 리스트 조회
+     * @param bookId - 책 번호 (FK)
+     * @return 파일 리스트
+     */
+    public List<FileResponse> findAllFileByBookId(final Long bookId) {
+        return fileMapper.findAllByBookId(bookId);
+    }
+
+    /**
      * 파일 리스트 조회
      * @param ids - PK 리스트
      * @return 파일 리스트
