@@ -65,23 +65,24 @@ CREATE TABLE `TB_BOOK` (
 );
 
 drop table TB_RENTAL;
-CREATE TABLE `TB_RENTAL` (
-	  `rental_no`	bigint	auto_increment NOT null	COMMENT '대여ID'
-	, `memberid`	bigint	NOT NULL	COMMENT '대여자ID'
-	, `bookid`		bigint	NOT null	COMMENT '대여도서ID'
-	, `rental_date`	datetime	NOT NULL	COMMENT '대여일. 반납계산일은 대여일+14'
-	, `return_date`	datetime	NOT null	COMMENT '실제반납일'
-	, `cr_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '생성일시'
-	, `cr_memberid`	bigint		NOT null	COMMENT '작성자'
-	, `md_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '수정일시'
-	, `rental_availableyn`	char(1)	NOT NULL	DEFAULT 'Y'	COMMENT 'Y:대여가능 N:대여불가능'
-	, `md_memberid`	bigint		NOT null COMMENT '수정자'
-	, primary key(rental_no)
-);
-ALTER TABLE `TB_RENTAL` ADD CONSTRAINT `FK_member_TO_rental_1` FOREIGN KEY (`memberid`)
-REFERENCES `tb_member` (`id`);
-ALTER TABLE `TB_RENTAL` ADD CONSTRAINT `FK_book_TO_rental_1` FOREIGN KEY (`bookid`)
-REFERENCES `TB_BOOK` (`bookid`);
+CREATE TABLE `tb_rental` (
+  `rental_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '대여ID',
+  `memberid` bigint(20) NOT NULL COMMENT '대여자ID',
+  `bookid` bigint(20) NOT NULL COMMENT '대여도서ID',
+  `rental_date` datetime NOT NULL COMMENT '대여일. 반납계산일은 대여일+14',
+  `return_date` datetime DEFAULT NULL COMMENT '실제반납일',
+  `cr_date` datetime DEFAULT current_timestamp() COMMENT '생성일시',
+  `cr_memberid` bigint(20) DEFAULT NULL COMMENT '작성자',
+  `md_date` datetime DEFAULT current_timestamp() COMMENT '수정일시',
+  `rental_availableyn` char(1) NOT NULL DEFAULT 'Y' COMMENT 'Y:대여가능 N:대여불가능',
+  `md_memberid` bigint(20) DEFAULT NULL COMMENT '수정자',
+  PRIMARY KEY (`rental_no`),
+  KEY `FK_member_TO_rental_1` (`memberid`),
+  KEY `FK_book_TO_rental_1` (`bookid`),
+  CONSTRAINT `FK_book_TO_rental_1` FOREIGN KEY (`bookid`) REFERENCES `tb_book` (`bookid`),
+  CONSTRAINT `FK_member_TO_rental_1` FOREIGN KEY (`memberid`) REFERENCES `tb_member` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 drop table `tb_file`;
 /*

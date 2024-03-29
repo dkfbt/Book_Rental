@@ -7,6 +7,7 @@ import com.study.common.paging.PagingResponse;
 import com.study.domain.file.FileRequest;
 import com.study.domain.file.FileResponse;
 import com.study.domain.file.FileService;
+import com.study.domain.rent.RentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -128,4 +129,18 @@ public class BookController {
         return showMessageAndRedirect(message, model);
     }
 
+
+    @PostMapping("/book/rent.do")
+    public String rentBook(@RequestParam final RentRequest params, Model model, final SearchDto queryParams) {
+        try {
+            // 대여 서비스 호출 (대여 로직 구현 필요)
+            bookService.rentBook(params);
+            MessageDto message = new MessageDto("도서 대여가 완료되었습니다.", "/book/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
+            return showMessageAndRedirect(message, model);
+        } catch (Exception e) {
+            // 예외 처리 (도서가 대여 불가능한 상태일 때의 처리 등)
+            MessageDto message = new MessageDto("도서 대여에 실패했습니다: " + e.getMessage(), "/book/list.do", RequestMethod.GET, null);
+            return showMessageAndRedirect(message, model);
+        }
+    }
 }

@@ -148,4 +148,36 @@
             <include refid="search" />
     </select>
 
+
+    <!-- 도서 대여 -->
+    <insert id="rent" parameterType="com.study.domain.rent.RentRequest" useGeneratedKeys="true" keyProperty="rentalNo" >
+        /* BookMapper.rent */
+        INSERT INTO tb_rental
+        (
+              memberid
+            , bookid
+            , rental_date
+        )
+        VALUES(#{memberId}, #{bookId}, current_timestamp());
+    </insert>
+
+
+    <!-- 도서가 대여가능한지 체크 -->
+    <select id="isRentAble" parameterType="com.study.domain.rent.RentRequest" resultType="int">
+        /* BookMapper.isRentAble */
+        SELECT
+            COUNT(*)
+        FROM
+            tb_rental A
+        JOIN TB_MEMBER B
+          ON A.MEMBERID = B.MEMBERID
+        AND TB_BOOK C
+          ON A.BOOKID = C.BOOKID
+        WHERE
+            1=1
+            and B.DELETE_YN = 0
+            AND B.총대여권수 < 5
+            AND A.대여가능여부 = 'Y'
+    </select>
+
 </mapper>

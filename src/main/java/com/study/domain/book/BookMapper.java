@@ -1,6 +1,8 @@
 package com.study.domain.book;
 
 import com.study.common.dto.SearchDto;
+import com.study.domain.rent.RentRequest;
+import com.study.domain.rent.RentResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -50,5 +52,19 @@ public interface BookMapper {
      * @return 도서 수
      */
     int count(SearchDto params);
+
+    /**
+     * 도서 대여
+     *
+     * @param params - 대여정보
+     */
+    Long rent(RentRequest params);
+
+    /**
+     * 도서가 대여가능한지 체크
+     *
+     * @return 대여정보
+     */
+    int isRentAble(RentRequest params);
 
 }

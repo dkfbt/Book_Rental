@@ -3,6 +3,8 @@ package com.study.domain.book;
 import com.study.common.dto.SearchDto;
 import com.study.common.paging.Pagination;
 import com.study.common.paging.PagingResponse;
+import com.study.domain.rent.RentRequest;
+import com.study.domain.rent.RentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +82,18 @@ public class BookService {
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<BookResponse> list = bookMapper.findAll(params);
         return new PagingResponse<>(list, pagination);
+    }
+
+    /**
+     * 도서 대여
+     * @param book - 도서 ID
+     * @return PK
+     */
+    @Transactional
+    public Long rentBook(RentRequest book) {
+        bookMapper.rent(book);
+        //빌리는걸 성공했으면 해당책은 rental가능여부를 "N"으로 변경
+        return book.getBookId();
     }
 
 }
