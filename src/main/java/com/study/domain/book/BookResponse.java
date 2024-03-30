@@ -16,6 +16,7 @@ public class BookResponse {
     private String pbComp;
     private LocalDate pbDate;
     private Integer price;
+    private String rentalAvailableYn;
 
     private LocalDateTime crDate;   // 생성일시
     private Long crMemberId;

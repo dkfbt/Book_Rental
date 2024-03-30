@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class BookRequest {
 
-   private Long bookId;
+    private Long bookId;
     private String isbn;
     private String bookName;
     private String coverFile;
@@ -20,6 +20,7 @@ public class BookRequest {
     private String pbComp;
     private LocalDate pbDate;
     private Integer price;
+    private String rentalAvailableYn;
     private List<MultipartFile> files = new ArrayList<>();    // 첨부파일 List
     private List<Long> removeFileIds = new ArrayList<>();     // 삭제할 첨부파일 id List
 

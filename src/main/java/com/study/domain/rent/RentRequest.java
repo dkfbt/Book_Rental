@@ -14,5 +14,4 @@ public class RentRequest {
     private Long memberId;              //대여자
     private LocalDateTime rentalDate;   //대여일
     private LocalDateTime returnDate;   //실제반납일
-    private String rentalAvailableYn;   //대여가능여부 "Y","N"
 }

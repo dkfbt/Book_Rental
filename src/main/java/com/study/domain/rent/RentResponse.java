@@ -19,7 +19,5 @@ public class RentResponse {
     private LocalDateTime mdDate;   // 최종 수정일시
     private Long mdMemberId;
 
-    private String rentalAvailableYn;   //대여가능여부 "Y","N"
-
 
 }

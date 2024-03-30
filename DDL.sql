@@ -56,7 +56,8 @@ CREATE TABLE `TB_BOOK` (
 	, `writer`	varchar(100)		comment '저자'
 	, `pb_comp`	varchar(100)		comment '출판사'
 	, `pb_date`	date				comment '출판일'
-	, `price`		int	    			comment '가격'
+	, `price`		int	    		comment '가격'
+    , `rental_availableyn` char(1) NOT NULL DEFAULT 'Y' COMMENT 'Y:대여가능 N:대여불가능'
 	, `cr_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '생성일시'
 	, `cr_memberid`	bigint	COMMENT '작성자'
 	, `md_date`	datetime	NOT null DEFAULT current_timestamp() COMMENT '수정일시'
@@ -74,7 +75,6 @@ CREATE TABLE `tb_rental` (
   `cr_date` datetime DEFAULT current_timestamp() COMMENT '생성일시',
   `cr_memberid` bigint(20) DEFAULT NULL COMMENT '작성자',
   `md_date` datetime DEFAULT current_timestamp() COMMENT '수정일시',
-  `rental_availableyn` char(1) NOT NULL DEFAULT 'Y' COMMENT 'Y:대여가능 N:대여불가능',
   `md_memberid` bigint(20) DEFAULT NULL COMMENT '수정자',
   PRIMARY KEY (`rental_no`),
   KEY `FK_member_TO_rental_1` (`memberid`),

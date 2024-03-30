@@ -166,7 +166,11 @@
     <select id="isRentAble" parameterType="com.study.domain.rent.RentRequest" resultType="int">
         /* BookMapper.isRentAble */
         SELECT
-            COUNT(*)
+            CASE WHEN COUNT(*) > 0
+                 THEN FALSE
+                 ELSE TRUE
+                  END
+              AS is_available
         FROM
             tb_rental A
         JOIN TB_MEMBER B
