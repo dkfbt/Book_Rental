@@ -99,10 +99,13 @@ public class BookService {
         int rentCount = bookMapper.countRent(book);
         if(isRentableBook==true && rentCount<5){
             bookMapper.rent(book);
-            bookMapper.setRentalAvailableN(bookrequest);
+            bookMapper.setRentalAvailableN(bookrequest);  //빌리는걸 성공했으면 해당책은 rental가능여부를 "N"으로 변경
+            return (long)rentCount;
+        }else{
+            //대여가능한 상태가 아님
+            return -1l;
         }
-        //빌리는걸 성공했으면 해당책은 rental가능여부를 "N"으로 변경
-        return book.getBookId();
+
     }
 
 }

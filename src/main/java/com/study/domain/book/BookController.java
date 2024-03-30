@@ -7,15 +7,20 @@ import com.study.common.paging.PagingResponse;
 import com.study.domain.file.FileRequest;
 import com.study.domain.file.FileResponse;
 import com.study.domain.file.FileService;
+import com.study.domain.member.MemberResponse;
 import com.study.domain.rent.RentRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -130,15 +135,23 @@ public class BookController {
 
 
     @PostMapping("/book/rent.do")
-    public String rentBook(@RequestParam final RentRequest params, Model model, final SearchDto queryParams) {
+    @ResponseBody
+    public MessageDto rentBook(HttpServletRequest request, @RequestBody RentRequest params, Model model) {
+
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        MessageDto message = new MessageDto("초기화", "/book/list.do", RequestMethod.GET, null);
         try {
-            bookService.rentBook(params);
-            MessageDto message = new MessageDto("도서 대여가 완료되었습니다.", "/book/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
-            return showMessageAndRedirect(message, model);
+            params.setMemberId(member.getId());
+            long result = bookService.rentBook(params);
+            if(result == -1){
+                message.setMessage("대여권수초과");
+            }else{
+                message.setMessage("대여완료");
+            }
         } catch (Exception e) {
-            // 예외 처리 (도서가 대여 불가능한 상태일 때의 처리 등)
-            MessageDto message = new MessageDto("도서 대여에 실패했습니다: " + e.getMessage(), "/book/list.do", RequestMethod.GET, null);
-            return showMessageAndRedirect(message, model);
+            message.setMessage("대여실패");
         }
+        return message;
     }
 }
