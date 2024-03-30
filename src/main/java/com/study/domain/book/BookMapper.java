@@ -53,6 +53,7 @@ public interface BookMapper {
      */
     int count(SearchDto params);
 
+
     /**
      * 도서 대여
      *
@@ -65,6 +66,27 @@ public interface BookMapper {
      *
      * @return 대여정보
      */
-    int isRentAble(RentRequest params);
+    boolean isRentAble(RentRequest params);
+
+    /**
+     * 해당유저의 대여 도서 수 카운팅
+     *
+     * @return 도서 수
+     */
+    int countRent(RentRequest params);
+
+    /**
+     * 도서의 대여가능여부 불가로 변경
+     *
+     * @return 대여정보
+     */
+    int setRentalAvailableN(BookRequest params);
+
+    /**
+     * 도서의 대여가능여부 가능으로 변경
+     *
+     * @return 대여정보
+     */
+    int setRentalAvailableY(BookRequest params);
 
 }

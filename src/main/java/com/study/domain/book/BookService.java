@@ -3,9 +3,11 @@ package com.study.domain.book;
 import com.study.common.dto.SearchDto;
 import com.study.common.paging.Pagination;
 import com.study.common.paging.PagingResponse;
+import com.study.domain.member.MemberMapper;
 import com.study.domain.rent.RentRequest;
 import com.study.domain.rent.RentResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,7 +93,14 @@ public class BookService {
      */
     @Transactional
     public Long rentBook(RentRequest book) {
-        bookMapper.rent(book);
+        BookRequest bookrequest = new BookRequest();
+        bookrequest.setBookId(book.getBookId());
+        boolean isRentableBook = bookMapper.isRentAble(book);
+        int rentCount = bookMapper.countRent(book);
+        if(isRentableBook==true && rentCount<5){
+            bookMapper.rent(book);
+            bookMapper.setRentalAvailableN(bookrequest);
+        }
         //빌리는걸 성공했으면 해당책은 rental가능여부를 "N"으로 변경
         return book.getBookId();
     }

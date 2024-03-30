@@ -13,6 +13,7 @@
 	, pb_comp
 	, pb_date
 	, price
+    , rental_availableyn
 	, cr_date
 	, cr_memberid
 	, md_date
@@ -163,25 +164,50 @@
 
 
     <!-- 도서가 대여가능한지 체크 -->
-    <select id="isRentAble" parameterType="com.study.domain.rent.RentRequest" resultType="int">
+    <select id="isRentAble" parameterType="com.study.domain.book.BookRequest" resultType="boolean">
         /* BookMapper.isRentAble */
         SELECT
-            CASE WHEN COUNT(*) > 0
-                 THEN FALSE
-                 ELSE TRUE
-                  END
-              AS is_available
+            CASE WHEN rental_availableyn = 'Y'
+                 THEN TRUE
+                 ELSE FALSE
+             END AS is_available
+          FROM
+            TB_BOOK
+         WHERE
+            bookid = #{bookId}
+    </select>
+
+    <!-- 해당유저의 대여 도서 수 카운팅 -->
+    <select id="countRent" parameterType="com.study.domain.rent.RentRequest" resultType="int">
+        /* BookMapper.countRent */
+        SELECT
+            COUNT(*)
         FROM
-            tb_rental A
-        JOIN TB_MEMBER B
-          ON A.MEMBERID = B.MEMBERID
-        AND TB_BOOK C
-          ON A.BOOKID = C.BOOKID
+            tb_rental
         WHERE
             1=1
-            and B.DELETE_YN = 0
-            AND B.총대여권수 < 5
-            AND A.대여가능여부 = 'Y'
+            AND memberid = #{memberId}
+            AND return_date IS NULL
     </select>
+
+    <!-- 도서의 대여가능여부 불가로 변경 -->
+    <update id="setRentalAvailableN" parameterType="com.study.domain.book.BookRequest">
+        /* bookMapper.setRentalAvailableN */
+        UPDATE tb_book
+        SET
+              rental_availableyn = 'N'
+        WHERE
+            bookid = #{bookId}
+    </update>
+
+    <!-- 도서의 대여가능여부 가능으로 변경 -->
+    <update id="setRentalAvailableY" parameterType="com.study.domain.book.BookRequest">
+        /* bookMapper.setRentalAvailableY */
+        UPDATE tb_book
+        SET
+              rental_availableyn = 'Y'
+        WHERE
+            bookid = #{bookId}
+    </update>
 
 </mapper>

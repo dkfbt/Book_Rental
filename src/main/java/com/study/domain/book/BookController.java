@@ -65,7 +65,6 @@ public class BookController {
     public String openBookList(@ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BookResponse> response = bookService.findAllBooks(params);
         model.addAttribute("response", response);
-        //파일 이미지 가져와서 뿌려줘야함. 또는 타임리프쪽에서 ajax로
         return "book/list";
     }
 
@@ -133,7 +132,6 @@ public class BookController {
     @PostMapping("/book/rent.do")
     public String rentBook(@RequestParam final RentRequest params, Model model, final SearchDto queryParams) {
         try {
-            // 대여 서비스 호출 (대여 로직 구현 필요)
             bookService.rentBook(params);
             MessageDto message = new MessageDto("도서 대여가 완료되었습니다.", "/book/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
             return showMessageAndRedirect(message, model);
