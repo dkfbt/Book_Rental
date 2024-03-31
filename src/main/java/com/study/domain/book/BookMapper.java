@@ -89,4 +89,18 @@ public interface BookMapper {
      */
     int setRentalAvailableY(BookRequest params);
 
+    /**
+     * 해당유저의 대여중인 도서
+     *
+     * @return 해당유저의 미반납도서목록
+     */
+    List<RentResponse> findRentedBooksByUserId(RentRequest params);
+
+    /**
+     * 반납
+     *
+     * @return
+     */
+     void returnBook(RentRequest params);
+
 }

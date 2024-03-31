@@ -105,7 +105,17 @@ public class BookService {
             //대여가능한 상태가 아님
             return -1l;
         }
-
     }
+
+    /**
+     * 도서 반납
+     * @param rentInfo - 대여정보
+     * @return PK
+     */
+    @Transactional
+    public Long returnBook(RentRequest rentInfo) {
+        return 0l;
+    }
+
 
 }

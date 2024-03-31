@@ -28,6 +28,31 @@ public class BookMapperTest {
         System.out.println("테스트완료");
     }
 
+    @Test
+    void 유저의대여상태확인() {
+        //given
+        RentRequest rentInfo = new RentRequest();
+        rentInfo.setMemberId(2l);
+
+        //when
+        bookMapper.findRentedBooksByUserId(rentInfo);
+        //then
+        System.out.println("테스트완료");
+    }
+
+    @Test
+    void 반납() {
+        //given
+        RentRequest rentInfo = new RentRequest();
+        rentInfo.setMemberId(2l);
+        rentInfo.setBookId(12l);
+
+        //when
+        bookMapper.returnBook(rentInfo);
+        //then
+        System.out.println("테스트완료");
+    }
+
 
 
 }

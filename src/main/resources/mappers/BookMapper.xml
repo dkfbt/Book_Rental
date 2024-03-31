@@ -210,4 +210,28 @@
             bookid = #{bookId}
     </update>
 
+    <!-- 해당 유저가 대여중인 도서리스트 -->
+    <select id="findRentedBooksByUserId" parameterType="com.study.domain.rent.RentRequest" resultType="com.study.domain.rent.RentResponse">
+    /* bookMapper.findRentedBooksByUserId */
+    SELECT
+            r.bookid
+          , r.memberid
+          , r.rental_date
+          , r.return_date
+      FROM tb_rental r
+      JOIN tb_book b
+        ON b.bookid = r.bookid
+     WHERE r.memberid = #{memberId}
+       AND r.return_date IS NULL
+    </select>
+
+    <!-- 반납-->
+    <select id="returnBook" parameterType="com.study.domain.rent.RentRequest">
+    /* bookMapper.returnBook */
+    UPDATE TB_RENTAL
+     SET return_date = NOW()
+   WHERE memberid = #{memberId}
+     AND bookid = #{bookId}
+    </select>
+
 </mapper>
