@@ -58,10 +58,10 @@
                     <button type="button" onclick="deleteBook();" class="btns btn_bdr1 btn_mid">삭제</button>
                     <button type="button" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로</button>
                     <!-- 대여 가능한 경우, '대여하기' 버튼 표시 -->
-                    <button type="button" th:if="${book.rentalAvailableYn == 'Y'}" onclick="rentBook(${book.bookId});" class="btns btn_bdr5 btn_mid">대여하기</button>
+                    <button type="button" th:if="${book.rentalAvailableYn == 'Y'}" onclick="rentBook();" class="btns btn_bdr5 btn_mid">대여하기</button>
                     <!-- 대여 불가능한 경우, '대여 불가' 텍스트 표시 -->
                     <span th:unless="${book.rentalAvailableYn == 'Y'}" class="btns btn_bdr2 btn_mid disabled">대여 불가</span>
-                    <button th:if="${isRented==true}" type="button" onclick="returnBook(${book.bookId});" class="btns btn_bdr3 btn_mid">반납하기</button>
+                    <button th:if="${isRented==true}" type="button" onclick="returnBook();" class="btns btn_bdr3 btn_mid">반납하기</button>
                 </p>
 
                 <!--/* 리뷰 작성 */-->
@@ -390,10 +390,8 @@
             }
 
             // 도서 대여 처리 함수
-            function rentBook(bookId) {
-                console.log("rentBook", bookId);
-                console.log([[ ${book.bookId}]]);
-                const data = { bookId: bookId };
+            function rentBook() {
+                const data = { bookId: [[ ${book.bookId}]] };
 
                 fetch('/book/rent.do', {
                     method: 'POST',
@@ -412,10 +410,10 @@
                     switch(data.message){
                         case "대여권수초과" :
                             alert('회원님은 더이상의 책을 빌릴수 없습니다.');
-                            window.location.reload(); // 페이지 새로고침을 하여 대여한 책은 대여불가로 표시되도록
                             break;
                         case "대여완료" :
                             alert('도서 대여 요청이 성공적으로 처리되었습니다.');
+                            window.location.reload(); // 페이지 새로고침을 하여 대여한 책은 대여불가로 표시되도록
                             break;
                         default :
                             alert('도서 대여를 실패하였습니다.');
@@ -429,9 +427,9 @@
 
 
             // 도서 반납
-            function returnBook(bookId) {
+            function returnBook() {
                 const form = document.getElementById('returnForm');
-                form.bookId.value = bookId;
+                form.bookId.value = [[ ${book.bookId}]];
                 form.submit();
             }
 
