@@ -238,9 +238,7 @@
                 const uri = `/books/${bookId}/reviews`;
                 const params = {
                     bookId : bookId,
-                    content : content.value,
-                    writer : 2
-                    //로그인 유저아이디로 바꿔야함
+                    content : content.value
                 }
 
                 callApi(uri, 'post', params);   //uri, method, params
@@ -326,7 +324,7 @@
                         <div>
                             <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
                             <p class="writer">
-                                <em>${row.writer}</em>
+                                <em>${row.name}</em>
                                 <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
                             </p>
                             <div class="cont"><div class="txt_con">${row.content}</div></div>

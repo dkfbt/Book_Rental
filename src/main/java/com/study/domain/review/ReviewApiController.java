@@ -1,6 +1,9 @@
 package com.study.domain.review;
 
 import com.study.common.paging.PagingResponse;
+import com.study.domain.member.MemberResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +21,12 @@ public class ReviewApiController {
 
     // 신규 리뷰 생성
     @PostMapping("/books/{bookId}/reviews")
-    public ReviewResponse saveReview(@PathVariable final Long bookId, @RequestBody final ReviewRequest params) {
+    public ReviewResponse saveReview(HttpServletRequest request, @PathVariable final Long bookId, @RequestBody final ReviewRequest params) {
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        params.setWriter(member.getId());
         Long id = reviewService.saveReview(params);
+
         return reviewService.findReviewById(id);
     }
 

@@ -14,6 +14,16 @@
         , md_date
     </sql>
 
+    <sql id="reviewColumns2">
+          a.reviewid
+        , a.bookid
+        , a.content
+        , a.writer
+        , a.delete_yn
+        , a.cr_date
+        , a.md_date
+    </sql>
+
 
     <!-- 리뷰 저장 -->
     <insert id="save" parameterType="com.study.domain.review.ReviewRequest" useGeneratedKeys="true" keyProperty="reviewId">
@@ -36,11 +46,14 @@
     <select id="findById" parameterType="long" resultType="com.study.domain.review.ReviewResponse">
         /* ReviewMapper.findById */
         SELECT
-            <include refid="reviewColumns" />
+            <include refid="reviewColumns2" />
+          , b.name
         FROM
-            tb_review
+            tb_review a
+        JOIN TB_MEMBER b
+          ON a.writer = b.id
         WHERE
-            reviewid = #{value}
+            a.reviewid = #{value}
     </select>
 
 
@@ -72,14 +85,17 @@
     <select id="findAll" parameterType="com.study.domain.review.ReviewSearchDto" resultType="com.study.domain.review.ReviewResponse">
         /* ReviewMapper.findAll */
         SELECT
-            <include refid="reviewColumns" />
+            <include refid="reviewColumns2" />
+           , b.name
         FROM
-            tb_review
+            tb_review a
+        JOIN TB_MEMBER b
+          ON a.writer = b.id
         WHERE
-            delete_yn = 0
-            AND bookid = #{bookId}
+            a.delete_yn = 0
+            AND a.bookid = #{bookId}
         ORDER BY
-            reviewid DESC
+            a.reviewid DESC
         LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 

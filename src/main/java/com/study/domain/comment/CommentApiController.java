@@ -1,6 +1,9 @@
 package com.study.domain.comment;
 
 import com.study.common.paging.PagingResponse;
+import com.study.domain.member.MemberResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +21,10 @@ public class CommentApiController {
 
     // 신규 댓글 생성
     @PostMapping("/posts/{postId}/comments")
-    public CommentResponse saveComment(@PathVariable final Long postId, @RequestBody final CommentRequest params) {
+    public CommentResponse saveComment(HttpServletRequest request, @PathVariable final Long postId, @RequestBody final CommentRequest params) {
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        params.setWriter(member.getId());
         Long id = commentService.saveComment(params);
         return commentService.findCommentById(id);
     }

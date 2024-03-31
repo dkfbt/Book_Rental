@@ -225,7 +225,6 @@
                 const params = {
                     postId : postId,
                     content : content.value,
-                    writer : '홍길동'
                 }
 
                 callApi(uri, 'post', params);
@@ -311,7 +310,7 @@
                         <div>
                             <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
                             <p class="writer">
-                                <em>${row.writer}</em>
+                                <em>${row.name}</em>
                                 <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
                             </p>
                             <div class="cont"><div class="txt_con">${row.content}</div></div>
