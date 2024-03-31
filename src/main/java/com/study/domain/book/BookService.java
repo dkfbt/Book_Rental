@@ -108,13 +108,31 @@ public class BookService {
     }
 
     /**
+     * 해당유저의 대여중인 도서
+     * @param memberid - 멤버아이디
+     * @return PK
+     */
+    @Transactional
+    public List<RentResponse> findRentedBooksByUserId(Long memberid){
+        List<RentResponse> result = bookMapper.findRentedBooksByUserId(memberid);
+        return result;
+    }
+
+    /**
      * 도서 반납
      * @param rentInfo - 대여정보
      * @return PK
      */
     @Transactional
-    public Long returnBook(RentRequest rentInfo) {
-        return 0l;
+    public int returnBookToday(RentRequest rentInfo) {
+        //대여테이블에서 반납일자 수정
+        int result = bookMapper.returnBookToday(rentInfo);
+
+        //도서테이블에서 상태값 y로 변경
+        BookRequest book = new BookRequest();
+        book.setBookId(rentInfo.getBookId());
+        bookMapper.setRentalAvailableY(book);
+        return result;
     }
 
 

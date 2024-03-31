@@ -211,7 +211,7 @@
     </update>
 
     <!-- 해당 유저가 대여중인 도서리스트 -->
-    <select id="findRentedBooksByUserId" parameterType="com.study.domain.rent.RentRequest" resultType="com.study.domain.rent.RentResponse">
+    <select id="findRentedBooksByUserId" parameterType="long" resultType="com.study.domain.rent.RentResponse">
     /* bookMapper.findRentedBooksByUserId */
     SELECT
             r.bookid
@@ -226,12 +226,12 @@
     </select>
 
     <!-- 반납-->
-    <select id="returnBook" parameterType="com.study.domain.rent.RentRequest">
-    /* bookMapper.returnBook */
+    <update id="returnBookToday" parameterType="com.study.domain.rent.RentRequest">
+    /* bookMapper.returnBookToday */
     UPDATE TB_RENTAL
      SET return_date = NOW()
    WHERE memberid = #{memberId}
      AND bookid = #{bookId}
-    </select>
+    </update>
 
 </mapper>

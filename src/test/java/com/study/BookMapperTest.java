@@ -32,10 +32,10 @@ public class BookMapperTest {
     void 유저의대여상태확인() {
         //given
         RentRequest rentInfo = new RentRequest();
-        rentInfo.setMemberId(2l);
+        Long memberid = 2l;
 
         //when
-        bookMapper.findRentedBooksByUserId(rentInfo);
+        bookMapper.findRentedBooksByUserId(memberid);
         //then
         System.out.println("테스트완료");
     }
@@ -48,7 +48,7 @@ public class BookMapperTest {
         rentInfo.setBookId(12l);
 
         //when
-        bookMapper.returnBook(rentInfo);
+        bookMapper.returnBookToday(rentInfo);
         //then
         System.out.println("테스트완료");
     }

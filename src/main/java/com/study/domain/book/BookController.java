@@ -9,6 +9,7 @@ import com.study.domain.file.FileResponse;
 import com.study.domain.file.FileService;
 import com.study.domain.member.MemberResponse;
 import com.study.domain.rent.RentRequest;
+import com.study.domain.rent.RentResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -67,18 +68,33 @@ public class BookController {
 
     // 도서 리스트 페이지
     @GetMapping("/book/list.do")
-    public String openBookList(@ModelAttribute("params") final SearchDto params, Model model) {
+    public String openBookList(HttpServletRequest request, @ModelAttribute("params") final SearchDto params, Model model) {
         PagingResponse<BookResponse> response = bookService.findAllBooks(params);
         model.addAttribute("response", response);
+
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        List<RentResponse> rentList = bookService.findRentedBooksByUserId(member.getId());
+        model.addAttribute("rentList", rentList);
         return "book/list";
     }
 
 
     // 도서 상세 페이지
     @GetMapping("/book/view.do")
-    public String openBookView(@RequestParam final Long id, Model model) {
+    public String openBookView(HttpServletRequest request, @RequestParam final Long id, Model model) {
         BookResponse book = bookService.findBookById(id);
         model.addAttribute("book", book);
+
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        List<RentResponse> rentList = bookService.findRentedBooksByUserId(member.getId());
+        //대여리스트에 해당책이 있는지 검사
+        boolean isRented = rentList.stream()
+                           .anyMatch(bookRentResponse -> bookRentResponse.getBookId().equals(id));
+
+
+        model.addAttribute("isRented", isRented);
         return "book/view";
     }
 
@@ -134,6 +150,7 @@ public class BookController {
     }
 
 
+    //도서 대여
     @PostMapping("/book/rent.do")
     @ResponseBody
     public MessageDto rentBook(HttpServletRequest request, @RequestBody RentRequest params, Model model) {
@@ -153,5 +170,22 @@ public class BookController {
             message.setMessage("대여실패");
         }
         return message;
+    }
+
+
+    // 도서 반납
+    @PostMapping("/book/return.do")
+    public String returnBook(HttpServletRequest request, final RentRequest params, Model model) {
+        HttpSession session = request.getSession();
+        MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
+        params.setMemberId(member.getId());
+        int result = bookService.returnBookToday(params);
+        if (result >= 1){
+            MessageDto message = new MessageDto("도서반납이 완료되었습니다.", "/book/list.do", RequestMethod.GET, null);
+            return showMessageAndRedirect(message, model);
+        }else{
+            MessageDto message = new MessageDto("도서반납에 실패하였습니다.", "/book/list.do", RequestMethod.GET, null);
+            return showMessageAndRedirect(message, model);
+        }
     }
 }

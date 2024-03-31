@@ -61,6 +61,7 @@
                     <button type="button" th:if="${book.rentalAvailableYn == 'Y'}" onclick="rentBook(${book.bookId});" class="btns btn_bdr5 btn_mid">대여하기</button>
                     <!-- 대여 불가능한 경우, '대여 불가' 텍스트 표시 -->
                     <span th:unless="${book.rentalAvailableYn == 'Y'}" class="btns btn_bdr2 btn_mid disabled">대여 불가</span>
+                    <button th:if="${isRented==true}" type="button" onclick="returnBook(${book.bookId});" class="btns btn_bdr3 btn_mid">반납하기</button>
                 </p>
 
                 <!--/* 리뷰 작성 */-->
@@ -112,12 +113,15 @@
             </div>
             <button type="button" class="btn_close" onclick="closeReviewUpdatePopup();"><span><i class="far fa-times-circle"></i></span></button>
         </div>
+
+        <form id="returnForm" method="post" action="/book/return.do" autocomplete="off" enctype="multipart/form-data">
+            <input type="hidden" name="bookId"  id="bookId" value="">
+        </form>
     </th:block>
 
     <th:block layout:fragment="script">
         <script th:inline="javascript">
         /*<![CDATA[*/
-
             window.onload = () => {
                 findAllFile();
 
@@ -423,6 +427,14 @@
                 .catch(error => {
                     alert('도서 대여 요청 처리 중 오류가 발생했습니다.');
                 });
+            }
+
+
+            // 도서 반납
+            function returnBook(bookId) {
+                const form = document.getElementById('returnForm');
+                form.bookId.value = bookId;
+                form.submit();
             }
 
         /*]]>*/

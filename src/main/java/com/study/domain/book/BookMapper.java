@@ -94,13 +94,13 @@ public interface BookMapper {
      *
      * @return 해당유저의 미반납도서목록
      */
-    List<RentResponse> findRentedBooksByUserId(RentRequest params);
+    List<RentResponse> findRentedBooksByUserId(Long memberid);
 
     /**
      * 반납
      *
      * @return
      */
-     void returnBook(RentRequest params);
+     int returnBookToday(RentRequest params);
 
 }
