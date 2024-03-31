@@ -47,11 +47,25 @@ public interface BookMapper {
     List<BookResponse> findAll(SearchDto params);
 
     /**
+     * 대여중인 도서 리스트 조회
+     *
+     * @return 대여중인 도서 리스트
+     */
+    List<RentResponse> findAllRentedBooks (SearchDto params);
+
+    /**
      * 도서 수 카운팅
      *
      * @return 도서 수
      */
     int count(SearchDto params);
+
+    /**
+     * 대여 도서 수 카운팅
+     *
+     * @return 도서 수
+     */
+    int countRentedBooks(SearchDto params);
 
 
     /**

@@ -20,6 +20,14 @@
 	, md_memberid
     </sql>
 
+    <sql id="rentColumns">
+	  rental_no
+	, memberid
+	, bookid
+	, rental_date
+	, return_date
+    </sql>
+
 
     <!-- 도서 검색 -->
     <sql id="search">
@@ -136,6 +144,33 @@
         LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 
+    <!-- 대여중인 도서 리스트 조회 -->
+    <select id="findAllRentedBooks" parameterType="com.study.common.dto.SearchDto" resultType="com.study.domain.rent.RentResponse">
+        /* bookMapper.findAllRentedBooks */
+        SELECT
+            a.rental_no
+           , a.memberid
+           , c.name as member_name
+           , a.bookid
+           , b.book_name
+           , b.cover_file
+           , b.isbn
+           , a.rental_date
+           , a.return_date
+        FROM
+            tb_rental a
+        left join tb_book b
+          on a.bookid = b.bookid
+        left join tb_member c
+          on a.memberid = c.id
+        WHERE
+            1=1
+            <include refid="search" />
+        ORDER BY
+            a.rental_date DESC
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
 
     <!-- 도서 수 카운팅 -->
     <select id="count" parameterType="com.study.common.dto.SearchDto" resultType="int">
@@ -146,6 +181,19 @@
             tb_book
         WHERE
             1=1
+            <include refid="search" />
+    </select>
+
+    <!-- 전체 대여중인 도서 수 카운팅 -->
+    <select id="countRentedBooks" parameterType="com.study.common.dto.SearchDto" resultType="int">
+        /* BookMapper.countRentedBooks */
+        SELECT
+            COUNT(*)
+        FROM
+            tb_rental
+        WHERE
+            1=1
+            and return_date IS NOT NULL
             <include refid="search" />
     </select>
 
