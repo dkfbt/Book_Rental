@@ -1,5 +1,6 @@
 package com.study.config;
 
+import com.study.interceptor.AdminCheckInterceptor;
 import com.study.interceptor.LoggerInterceptor;
 import com.study.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .addPathPatterns("/**/*.do")
                 .excludePathPatterns("/log*");
+
+        // AdminInterceptor 추가
+        registry.addInterceptor(new AdminCheckInterceptor())
+                .addPathPatterns("/admin/**"); // /admin 경로에 적용
     }
 
 

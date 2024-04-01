@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -15,6 +15,11 @@
 </head>
 
 <body>
+
+	<div th:if="${session.errorMessage}" class="alert alert-danger">
+		<span th:text="${session.errorMessage}"></span>
+	</div>
+
 	<div id="login_wrap">
 		<div id="login_box">
 			<div class="login_con">
