@@ -10,6 +10,7 @@ public class RentResponse {
     private Long rentalNo;              //대여id
     private Long bookId;                //북id
         private String bookName;            //책이름
+        private String isbn;                //책 isbn
     private Long memberId;              //대여자
         private String coverFile;           //커버이미지
         private String memberName;          //대여자이름

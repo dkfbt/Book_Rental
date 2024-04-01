@@ -150,8 +150,8 @@
                             <td class="tl">${row.isbn}</td>
 <!--                            <td class="tl">${row.memberId}</td>-->
                             <td class="tl">${row.memberName}</td>
-                            <td class="tl">${row.rentalDate}</td>
-                            <td class="tl">${row.returnDate}</td>
+                            <td>${dayjs(row.rentalDate).isValid() ? dayjs(row.rentalDate).format('YYYY-MM-DD HH:mm') : ''}</td>
+                            <td>${dayjs(row.returnDate).isValid() ? dayjs(row.returnDate).format('YYYY-MM-DD HH:mm') : ''}</td>
                         </tr>
                     `;
                 })
