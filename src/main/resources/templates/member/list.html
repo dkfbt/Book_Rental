@@ -140,7 +140,7 @@
                         <tr>
                             <td><input type="checkbox" /></td>
                             <td>${index+1}</td>
-                            <td>${row.loginId}</td>
+                            <td><a href="/admin/member/view.do?loginId=${row.loginId}">${row.loginId}</a></td>
                             <td>${row.name}</td>
                             <td>${row.gender}</td>
                             <td>${dayjs(row.birthday).format('YYYY-MM-DD')}</td>

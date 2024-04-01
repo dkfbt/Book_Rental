@@ -17,7 +17,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
         MemberResponse member = (MemberResponse) session.getAttribute("loginMember");
 
         // 2. 관리자인지 체크
-        if (member.getMemberType() == 1 ) {
+        if (member.getMemberType() == '1' ) {
             return true;
         }else{
             session.setAttribute("errorMessage", "관리자만 접속 가능합니다.");

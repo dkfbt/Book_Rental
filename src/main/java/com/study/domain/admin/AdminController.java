@@ -52,6 +52,20 @@ public class AdminController {
         return "admin/memberInsert";
     }
 
+    // 관리자의 회원정보 상세보기
+    @GetMapping("/admin/member/view.do")
+    public String findMemberByLoginId(HttpServletRequest request, @RequestParam(value = "loginId", required = false) final String loginId, Model model) {
+        HttpSession session = request.getSession();
+        MemberResponse loginAdmin = (MemberResponse) session.getAttribute("loginMember");
+        if (loginId != null) {
+            MemberResponse member = memberService.findMemberByLoginId(loginId);
+            model.addAttribute("member", member);
+            model.addAttribute("loginAdmin", loginAdmin);
+        }
+        return "admin/memberView";
+
+    }
+
     // 대여중인 도서 리스트 페이지
     @GetMapping("/admin/book/list.do")
     public String openBookList(HttpServletRequest request, @ModelAttribute("params") final SearchDto params, Model model) {
