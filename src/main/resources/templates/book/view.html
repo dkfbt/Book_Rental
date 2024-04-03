@@ -54,8 +54,10 @@
                     </tbody>
                 </table>
                 <p class="btn_set">
-                    <button type="button" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정</button>
-                    <button type="button" onclick="deleteBook();" class="btns btn_bdr1 btn_mid">삭제</button>
+                <!--  타임리프에서는 세션의 값을 바로 쓸수있고, char타입의 비교를 진행하기 위해 문자열로 변환해야함-->
+                    <button type="button" onclick="goWritePage();" class="btns btn_bdr4 btn_mid" th:if="${#strings.toString(session.loginMember.memberType) == '1'}">수정</button>
+                    <button type="button" onclick="deleteBook();" class="btns btn_bdr1 btn_mid" th:if="${#strings.toString(session.loginMember.memberType) == '1'}">삭제</button>
+
                     <button type="button" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로</button>
                     <!-- 대여 가능한 경우, '대여하기' 버튼 표시 -->
                     <button type="button" th:if="${book.rentalAvailableYn == 'Y'}" onclick="rentBook();" class="btns btn_bdr5 btn_mid">대여하기</button>
