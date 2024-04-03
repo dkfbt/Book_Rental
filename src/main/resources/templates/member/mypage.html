@@ -207,6 +207,27 @@
 			}).open();
 		}
 
+		function withdrawalPopup(){
+			let confirmResult = confirm("정말 탈퇴하시겠습니까?");
+			if(confirmResult == true){
+				fetch('/member/withdraw.do', {
+					method: 'POST'
+				})
+				.then(response => {
+					alert(response.status);
+					if(response.ok){	//응답상태코드가 200~299사이일때 true반환
+						alert("회원탈퇴성공");
+						window.location.href = "/login.do";
+					}else{
+						alert("회원탈퇴실패");
+					}
+				})
+				.catch(error => {
+					alert("네트워크 오류가 발생했습니다.");
+				});
+			}
+		}
+
 
         /*]]>*/
         </script>
