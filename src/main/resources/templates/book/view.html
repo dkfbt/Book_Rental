@@ -124,9 +124,11 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
         /*<![CDATA[*/
+            var loginMember = /*[[${session.loginMember}]]*/ null;
+            //alert(JSON.stringify(loginMember));
+
             window.onload = () => {
                 findAllFile();
-
                 findAllReview();
             }
 
@@ -321,10 +323,12 @@
                                 <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
                             </p>
                             <div class="cont"><div class="txt_con">${row.content}</div></div>
+                            ${loginMember && (loginMember.id == row.writer || loginMember.memberType === "1") ? `
                             <p class="func_btns">
                                 <button type="button" onclick="openReviewUpdatePopup(${row.reviewId});" class="btns"><span class="icons icon_modify">수정</span></button>
                                 <button type="button" onclick="deleteReview(${row.reviewId});" class="btns"><span class="icons icon_del">삭제</span></button>
                             </p>
+                            ` : ''}
                         </div>
                     `;
                 })
