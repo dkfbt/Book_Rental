@@ -143,15 +143,6 @@
                     return false;
                 }
 
-                // 3. 파일 영역 추가
-                let fileHtml = '<div class="file_down"><div class="cont">';
-                response.forEach(row => {
-                    fileHtml += `<a href="/books/${bookId}/files/${row.reviewId}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.originalName}</a>`;
-                })
-                fileHtml += '</div></div>';
-
-                // 4. 파일 HTML 렌더링
-                document.getElementById('files').innerHTML = fileHtml;
             }
 
 
