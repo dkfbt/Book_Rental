@@ -21,5 +21,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 item.classList.add('active');
             }
         });
+    } else {
+        // 저장된 선택한 항목이 없으면 홈 화면을 활성화합니다.
+        goToHomePage();
     }
 });
+
+
+// 홈 화면으로 이동하는 함수
+function goToHomePage() {
+    // 모든 네비게이션 항목에서 'active' 클래스를 제거합니다.
+    list.forEach((item) => item.classList.remove('active'));
+    // 홈 화면을 나타내는 네비게이션 항목에 'active' 클래스를 추가합니다.
+    document.querySelector('.list a[href="/"]').parentNode.classList.add('active');
+    // 선택한 항목을 로컬 스토리지에서 제거합니다.
+    localStorage.removeItem('selectedNavItem');
+}
