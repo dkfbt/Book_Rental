@@ -10,7 +10,8 @@ public class PostResponse {
     private Long id;                       // PK
     private String title;                  // 제목
     private String content;                // 내용
-    private String writer;                 // 작성자
+    private Long writerId;                     // 작성자id
+    private String writerName;                 // 작성자이름
     private int viewCnt;                   // 조회 수
     private Boolean noticeYn;              // 공지글 여부
     private Boolean deleteYn;              // 삭제 여부
