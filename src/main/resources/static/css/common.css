@@ -18,8 +18,8 @@ nav > ul > li.has_sub > a::after, .menu_toggle > span,
 header * {box-sizing:border-box;}
 header {position:relative; z-index:1;}
 header .head {overflow:hidden; border-bottom:3px solid rgba(67,75,83,1); padding:10px 15px; background:#fff;}
-header .head h1 {color:#111; font-size:17px; font-weight:500; letter-spacing:0; float:left;}
-header .head h1 i {color:#e3e3e3; font-size:12px; font-weight:400;}
+header .head h1 {color:#111; font-size:30px; font-weight:500; letter-spacing:0; float:left;}
+header .head h1 i {color:#e3e3e3; font-size:25px; font-weight:400;}
 header .head .top_menu {float:right;}
 header .head .top_menu > div {display:inline-block; font-size:13px;}
 header .head .top_menu > div i {font-size:12px; color:#fff;}
@@ -194,4 +194,33 @@ thumbnailPreviewContainer {
 }
 .middleThumbnail{
     width : 25vw;
+}
+
+.stripe {
+  color: #ccc;
+  line-height: 1;
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  font-family: 'lato';
+  font-weight: 700;
+  font-size: 30px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.stripe:after {
+  content: "도서관리 프로젝트";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  display: block;
+  color: #4badd8;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: 1s ease-out width;
+}
+.stripe:hover:after {
+  width: 100%;
 }
