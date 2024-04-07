@@ -16,7 +16,7 @@
 						<div class="pop_container">
 								<table class="tb tb_row tl">
 									<colgroup>
-										<col style="width:30%;" /><col style="width:70%;" />
+										<col style="width:20%;" /><col style="width:50%;" />
 									</colgroup>
 									<input th:value="*{id}" type="hidden" id="id" name="id"  />
 									<tbody>
@@ -214,7 +214,6 @@
 					method: 'POST'
 				})
 				.then(response => {
-					alert(response.status);
 					if(response.ok){	//응답상태코드가 200~299사이일때 true반환
 						alert("회원탈퇴성공");
 						window.location.href = "/login.do";
