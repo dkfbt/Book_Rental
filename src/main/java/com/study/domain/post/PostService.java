@@ -48,6 +48,18 @@ public class PostService {
     }
 
     /**
+     * 게시글 한번 조회
+     * @param params - 게시글 정보
+     * @return PK
+     */
+    @Transactional
+    public Long addViewCount(final Long id) {
+        postMapper.addViewCount(id);
+        return id;
+    }
+
+
+    /**
      * 게시글 삭제
      * @param id - PK
      * @return PK

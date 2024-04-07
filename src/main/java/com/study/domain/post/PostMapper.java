@@ -30,6 +30,15 @@ public interface PostMapper {
      */
     void update(PostRequest params);
 
+
+    /**
+     * 게시글 뷰수 1회 증가
+     *
+     * @param id - pk
+     */
+    void addViewCount(Long id);
+
+
     /**
      * 게시글 삭제
      *

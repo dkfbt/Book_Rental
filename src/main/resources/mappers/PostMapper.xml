@@ -95,6 +95,16 @@
             id = #{id}
     </update>
 
+    <!-- 게시글 조회수 1증가 -->
+    <update id="addViewCount" parameterType="long">
+        /* PostMapper.addViewCount */
+        UPDATE tb_post
+        SET
+              view_cnt = view_cnt + 1
+        WHERE
+            id = #{id}
+    </update>
+
 
     <!-- 게시글 삭제 -->
     <delete id="deleteById" parameterType="long">
