@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     var selectedMenu = localStorage.getItem('selectedMenu');
-    console.log(selectedMenu);
+    console.log("common.js에서의 selectedMenu : " , selectedMenu);
     if(selectedMenu) {
         $(selectedMenu).addClass('on').next('ul').show();
     }
