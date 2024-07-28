@@ -160,7 +160,9 @@
                             <td>${row.pbComp}</td>
                             <td>${dayjs(row.pbDate).isValid() ? dayjs(row.pbDate).format('YYYY-MM-DD') : ''}</td>
                             <td>${row.price ? row.price : '미정'} </td>
+
                             <td>${row.rentalAvailableYn ==='Y' ? `<button class="btns btn_bdr5 btn_mid" onclick="rentBook(${row.bookId})">대여하기</button>` : '대여 불가'}</td>
+
                             <td>${isRented ? `<button class="btns btn_bdr1 btn_mid" onclick="returnBook(${row.bookId})">반납하기</button>` : ''}</td>
                         </tr>
                     `;

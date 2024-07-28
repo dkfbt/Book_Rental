@@ -25,7 +25,9 @@
                             <tr>
                                 <th>ISBN <span class="es">필수 입력</span></th>
                                 <td colspan="2"><input type="text" id="isbn" name="isbn" maxlength="50" placeholder="4글자-2글자-4글자-3글자-1글자" /></td>
+
                                 <td rowspan="7">
+
                                     <!-- 썸네일 미리보기 영역 -->
                                     <div id="thumbnailPreviewContainer" th:if="${book != null and book.coverFile != null}">
                                         <img class="middleThumbnail" id="middleThumbnail"  th:src="@{/uploads/{filename}(filename=${book.coverFile})}" alt="Thumbnail" />

@@ -137,6 +137,7 @@ public class BookController {
         fileService.deleteAllFileByIds(params.getRemoveFileIds());
 
         MessageDto message = new MessageDto("도서 수정이 완료되었습니다.", "/book/list.do", RequestMethod.GET, queryParamsToMap(queryParams));
+
         return showMessageAndRedirect(message, model);
     }
 

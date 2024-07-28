@@ -16,12 +16,14 @@
             }
 
             const form = document.getElementById('redirectForm');
+
             if (form) {
                 form.submit();
                 return false;
             }
 
             const redirectUri = [[ ${params.redirectUri} ]];
+
             location.href = redirectUri;
         }
 

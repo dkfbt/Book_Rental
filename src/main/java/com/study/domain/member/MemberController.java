@@ -95,9 +95,13 @@ public class MemberController {
     // 회원이 보는 마이페이지.  admin에도 mypage가 생길것이라 이렇게 url만듦
     @GetMapping("/member/mypage.do")
     public String myPage(HttpServletRequest request, Model model) {
+
         HttpSession session = request.getSession();
+
         MemberResponse loginMember = (MemberResponse) session.getAttribute("loginMember");
+
         System.out.println("로그인멤버 : " +loginMember);
+
         if (loginMember != null) {
             model.addAttribute("loginMember", loginMember);
             return "member/mypage";
