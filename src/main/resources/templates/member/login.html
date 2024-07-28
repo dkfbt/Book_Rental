@@ -24,12 +24,13 @@
 		<div id="login_box">
 			<div class="login_con">
 				<div class="login_tit">
-					<h2>게시판 프로젝트</h2>
+					<h2>도서관리 프로젝트</h2>
 					<p>LOG<i>IN</i></p>
 				</div>
 
 				<div class="login_input">
 					<form id="loginForm" onsubmit="return false;" autocomplete="off">
+						<input type="hidden" id="previousUri"  name="previousUri" value="/">
 						<ul>
 							<li>
 								<label for="loginId" class="skip_info">아이디</label>
@@ -169,7 +170,7 @@
 				},
 				async : false,
 				success : function (response) {
-					location.href = '/post/list.do';
+					location.href = form.previousUri.value;
 				},
 				error : function (request, status, error) {
 					alert('아이디와 비밀번호를 확인해 주세요.');

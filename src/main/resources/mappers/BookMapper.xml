@@ -20,6 +20,22 @@
 	, md_memberid
     </sql>
 
+    <!-- tb_book 테이블에서 인서트시 쓸 컬럼 -->
+    <sql id="bookInsertColumns">
+	  bookid
+	, isbn
+	, book_name
+	, cover_file
+	, writer
+	, pb_comp
+	, pb_date
+	, price
+	, cr_date
+	, cr_memberid
+	, md_date
+	, md_memberid
+    </sql>
+
     <sql id="rentColumns">
 	  rental_no
 	, memberid
@@ -66,7 +82,7 @@
     <insert id="save" parameterType="com.study.domain.book.BookRequest" useGeneratedKeys="true" keyProperty="bookId">
         /* bookMapper.save */
         INSERT INTO tb_book (
-            <include refid="bookColumns" />
+            <include refid="bookInsertColumns" />
         ) VALUES (
               #{bookId}
             , #{isbn}

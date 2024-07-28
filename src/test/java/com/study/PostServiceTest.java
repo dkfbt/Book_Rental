@@ -17,7 +17,7 @@ public class PostServiceTest {
         PostRequest params = new PostRequest();
         params.setTitle("1번 게시글 제목");
         params.setContent("1번 게시글 내용");
-        params.setWriter("테스터");
+        params.setWriterId(2l);
         params.setNoticeYn(false);
         Long id = postService.savePost(params);
         System.out.println("생성된 게시글 ID : " + id);
@@ -30,7 +30,7 @@ public class PostServiceTest {
             PostRequest params = new PostRequest();
             params.setTitle(i + "번 게시글 제목");
             params.setContent(i + "번 게시글 내용");
-            params.setWriter("테스터" + i);
+            params.setWriterId(2l);
             params.setNoticeYn(false);
             postService.savePost(params);
         }

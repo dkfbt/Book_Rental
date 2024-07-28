@@ -16,6 +16,18 @@
         , modified_date
     </sql>
 
+    <sql id="postColumns2">
+          a.id
+        , a.title
+        , a.content
+        , a.writer
+        , a.view_cnt
+        , a.notice_yn
+        , a.delete_yn
+        , a.created_date
+        , a.modified_date
+    </sql>
+
 
     <!-- 게시글 검색 -->
     <sql id="search">
@@ -59,7 +71,7 @@
               #{id}
             , #{title}
             , #{content}
-            , #{writer}
+            , #{writerId}
             , 0
             , #{noticeYn}
             , 0
@@ -73,11 +85,15 @@
     <select id="findById" parameterType="long" resultType="com.study.domain.post.PostResponse">
         /* PostMapper.findById */
         SELECT
-            <include refid="postColumns" />
+            <include refid="postColumns2" />
+           , b.name as writerName
         FROM
-            tb_post
+            tb_post a
+        JOIN
+            tb_member b
+          ON a.writer = b.id
         WHERE
-            id = #{value}
+            a.id = #{value}
     </select>
 
 
@@ -89,8 +105,18 @@
               modified_date = NOW()
             , title = #{title}
             , content = #{content}
-            , writer = #{writer}
+            , writer = #{writerId}
             , notice_yn = #{noticeYn}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 게시글 조회수 1증가 -->
+    <update id="addViewCount" parameterType="long">
+        /* PostMapper.addViewCount */
+        UPDATE tb_post
+        SET
+              view_cnt = view_cnt + 1
         WHERE
             id = #{id}
     </update>
@@ -111,14 +137,18 @@
     <select id="findAll" parameterType="com.study.common.dto.SearchDto" resultType="com.study.domain.post.PostResponse">
         /* PostMapper.findAll */
         SELECT
-            <include refid="postColumns" />
+            <include refid="postColumns2" />
+           , b.name as writerName
         FROM
-            tb_post
+            tb_post a
+        JOIN
+            tb_member b
+          ON a.writer = b.id
         WHERE
-            delete_yn = 0
+            a.delete_yn = 0
             <include refid="search" />
         ORDER BY
-            id DESC
+            a.id DESC
         LIMIT #{pagination.limitStart}, #{recordSize}
     </select>
 

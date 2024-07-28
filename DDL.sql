@@ -10,7 +10,7 @@ CREATE TABLE `tb_post` (
     `modified_date` datetime               DEFAULT NULL COMMENT '최종 수정일시',
     PRIMARY KEY (`id`)
 ) COMMENT '게시글';
-
+ALTER TABLE TB_POST MODIFY writer BIGINT;   --2024.04.07 글쓴이이름을 화면에서 입력받도록 한것을 로그인유저id로 자동기입
 
 -- drop table `tb_member`;
 CREATE TABLE `tb_member` (

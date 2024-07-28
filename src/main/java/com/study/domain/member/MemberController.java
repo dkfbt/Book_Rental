@@ -26,7 +26,9 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/login.do")
-    public String openLogin() {
+    public String openLogin(HttpServletRequest request, Model model) {
+//        String previousUri = (String) request.getSession().getAttribute("previousUri");
+//        model.addAttribute("previousUri", previousUri);
         return "member/login";
     }
 

@@ -43,7 +43,7 @@ public class PostMapperTest {
             PostRequest params = new PostRequest();
             params.setTitle(i + "번 게시글 제목");
             params.setContent(i + "번 게시글 내용");
-            params.setWriter("테스터" + i);
+            params.setWriterId(2l);
             params.setNoticeYn(false);
             postMapper.save(params);
         }
@@ -69,7 +69,7 @@ public class PostMapperTest {
         params.setId(1L);
         params.setTitle("1번 게시글 제목 수정합니다.");
         params.setContent("1번 게시글 내용 수정합니다.");
-        params.setWriter("도뎡이");
+        params.setWriterId(2l);
         params.setNoticeYn(true);
         postMapper.update(params);
 

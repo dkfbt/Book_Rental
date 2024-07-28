@@ -50,15 +50,17 @@
                     </tbody>
                 </table>
 
+                <!--/* 버튼 */-->
+                <p class="btn_set tr">
+                    <a th:href="@{/post/write.do}" class="btns btn_st3 btn_large rounded">글쓰기</a>
+                </p>
+
                 <!--/* 페이지네이션 렌더링 영역 */-->
                 <div class="paging">
 
                 </div>
 
-                <!--/* 버튼 */-->
-                <p class="btn_set tr">
-                    <a th:href="@{/post/write.do}" class="btns btn_st3 btn_mid">글쓰기</a>
-                </p>
+
             </section>
         </div> <!--/* .content */-->
     </th:block>
@@ -138,7 +140,7 @@
                             <td><input type="checkbox" /></td>
                             <td>${row.noticeYn === false ? num-- : '공지'}</td>
                             <td class="tl"><a href="javascript:void(0);" onclick="goViewPage(${row.id});">${row.title}</a></td>
-                            <td>${row.writer}</td>
+                            <td>${row.writerName}</td>
                             <td>${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</td>
                             <td>${row.viewCnt}</td>
                         </tr>

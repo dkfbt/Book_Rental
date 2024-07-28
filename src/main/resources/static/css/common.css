@@ -18,8 +18,8 @@ nav > ul > li.has_sub > a::after, .menu_toggle > span,
 header * {box-sizing:border-box;}
 header {position:relative; z-index:1;}
 header .head {overflow:hidden; border-bottom:3px solid rgba(67,75,83,1); padding:10px 15px; background:#fff;}
-header .head h1 {color:#111; font-size:17px; font-weight:500; letter-spacing:0; float:left;}
-header .head h1 i {color:#e3e3e3; font-size:12px; font-weight:400;}
+header .head h1 {color:#111; font-size:30px; font-weight:500; letter-spacing:0; float:left;}
+header .head h1 i {color:#e3e3e3; font-size:25px; font-weight:400;}
 header .head .top_menu {float:right;}
 header .head .top_menu > div {display:inline-block; font-size:13px;}
 header .head .top_menu > div i {font-size:12px; color:#fff;}
@@ -47,6 +47,102 @@ nav > ul > li > ul ul {background:rgba(255,255,255,0.07); border-radius:6px; pad
 nav > ul > li > ul ul > li > a {padding:5px 15px; font-size:13px;}
 nav > ul > li.has_sub > a::after {content:''; display:inline-block; background-position:0 0; position:absolute; top:50%; right:15px; margin-top:-3px; width:10px; height:6px; z-index:1; transition:all 0.1s; transform-origin:50% 50%;}
 nav > ul > li.has_sub > a.on::after {transform:rotate(180deg); opacity:1;}
+
+
+/* 4월 7일 네비게이션 수정 */
+.navigation {
+    position: relative;
+    height: 500px;
+    width: 70px;
+    background: #2b343b;
+    box-shadow: 10px 0 0 #4187f6;
+    border-left: 10px solid #2b343b;
+    overflow-x: hidden;
+    transition: width 0.5s;
+}
+
+.navigation:hover {
+    width: 200px;
+}
+
+.navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 40px;
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navigation ul li.active {
+    background: #4187f6;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+}
+
+.navigation ul li.active a::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #2b343b;
+    border-radius: 50%;
+    box-shadow: 15px 15px 0 #4187f6;
+}
+
+.navigation ul li.active a::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #2b343b;
+    border-radius: 50%;
+    box-shadow: 15px -15px 0 #4187f6;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+}
+
+.navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+}
+
 
 footer {background:#fff; box-shadow:0 0 20px rgba(80,80,80,0.1); height:40px; line-height:40px; font-size:12px; color:#999; text-align:center; letter-spacing:0; position:absolute; bottom:0; left:0; width:100%;}
 
@@ -98,4 +194,33 @@ thumbnailPreviewContainer {
 }
 .middleThumbnail{
     width : 25vw;
+}
+
+.stripe {
+  color: #ccc;
+  line-height: 1;
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  font-family: 'lato';
+  font-weight: 700;
+  font-size: 30px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.stripe:after {
+  content: "도서관리 프로젝트";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 1;
+  display: block;
+  color: #4badd8;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: 1s ease-out width;
+}
+.stripe:hover:after {
+  width: 100%;
 }
